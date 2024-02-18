@@ -55,7 +55,6 @@ function _zl {
 		EXIT=$?
 	fi
 	
-	# Source the .env.sh file if it exists
     	if [ -f .env.sh ] ; then
         	# shellcheck disable=SC1091
         	source .env.sh
