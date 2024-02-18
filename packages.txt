@@ -1,0 +1,5 @@
+tmux
+vim
+zoxide
+htop
+ncdu
