@@ -1,0 +1,19 @@
+call plug#begin()
+
+" https://github.com/junegunn/fzf
+" https://github.com/junegunn/fzf.vim
+" https://github.com/junegunn/fzf/blob/master/README-VIM.md
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+"Plug 'scrooloose/nerdcommenter'     " Comment out lines <leader>ci
+"Plug 'tpope/vim-fugitive'           " Git commands such as Git {blame,diff}
+
+call plug#end()
+
+set nu
+set rnu
+syntax on
+set nocp
+filetype plugin on
+nnoremap <C-f> :Files<CR>

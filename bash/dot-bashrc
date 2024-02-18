@@ -1,0 +1,22 @@
+export PATH="~/bin:$PATH"
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+fi
+
+set -o vi
+
+# Vim within Tmux, not showing syntax hightlight. The below change fixes the
+# problem: https://vi.stackexchange.com/a/16081
+export TERM=xterm-256color
+
+source $HOME/.bashrcd/prompt.sh
+source $HOME/.bashrcd/functions.sh
+source $HOME/.bashrcd/aliases.sh
+
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+. "$HOME/.cargo/env"
+eval "$(zoxide init bash)"
