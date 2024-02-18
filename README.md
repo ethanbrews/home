@@ -2,7 +2,8 @@
 
 My configuration files for bash, vim, windows terminal and other command line tools.
 
-Install configuration from each folder using gnu stow. `stow [dir]`
+Install configuration from each folder using gnu stow. `stow [dir] --dotfiles`
+
 Install packages with `cat packages.txt | xargs sudo apt install -y`
 
 Install manually:
