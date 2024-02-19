@@ -10,6 +10,9 @@ Plug 'tpope/vim-fugitive'
 
 call plug#end()
 
+let &t_SI = "\e[6 q"
+let &t_EI = "\e[2 q"
+
 " Basic settings
 set nu
 set rnu
