@@ -42,15 +42,15 @@ function _zl {
 			eval "z '$1'"
 			EXIT=$?
 		elif [ -f "$1" ]; then
-			eval "z '$1'"
-			EXIT=$?
+                        DIRNAME=$(dirname "$1")
+                        eval "\cd '$DIRNAME'"
+                        EXIT=$?
 		else
-			echo "_zl: $2: No such file or directory"
+			echo "_zl: $1: No such file or directory"
 			EXIT=1
 		fi
 	else
 		# Let z deal with 2+ args
-		# TODO: Query zoxide and repeat file/directory logic?
 		eval "z $@"
 		EXIT=$?
 	fi

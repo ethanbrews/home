@@ -11,7 +11,11 @@ export TERM=xterm-256color
 source $HOME/.bashrcd/prompt.sh
 source $HOME/.bashrcd/functions.sh
 source $HOME/.bashrcd/aliases.sh
-[ -f $HOME/.bashrcd/local.sh ] && source $HOME/.bashrcd/local.sh
+if [ -f $HOME/.bashrcd/local.sh ]; then 
+	source $HOME/.bashrcd/local.sh
+fi
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+if [ -f ~/.fzf.bash ]; then
+	source ~/.fzf.bash
+fi
 eval "$(zoxide init bash)"
