@@ -4,8 +4,6 @@ if [ -x /usr/bin/dircolors ]; then
     alias ls='ls --color=auto'
 fi
 
-set -o vi
-
 # Vim within Tmux, not showing syntax hightlight. The below change fixes the
 # problem: https://vi.stackexchange.com/a/16081
 export TERM=xterm-256color
