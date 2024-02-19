@@ -79,3 +79,24 @@ function _go_back {
         fi
     fi
 }
+
+# File extractor
+# usage: extract <file>
+function _extract {
+	python3 $HOME/.bashrcd/extract.py "$@"
+}
+
+_h2d(){
+	printf "%d\n" $1
+}
+_d2h(){
+	printf "%x\n" $1
+}
+
+function _show_info {
+	FILESIZE=$(stat -c%s "$1" | numfmt --to=iec)
+	FILETYPE=$(stat -c%F "$1")
+	FILENAME=$(stat -c%n "$1")
+
+	echo "$FILESIZE $FILENAME ($FILETYPE)"
+}

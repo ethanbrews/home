@@ -1,5 +1,3 @@
-export PATH="~/bin:$PATH"
-
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -15,8 +13,7 @@ export TERM=xterm-256color
 source $HOME/.bashrcd/prompt.sh
 source $HOME/.bashrcd/functions.sh
 source $HOME/.bashrcd/aliases.sh
-
+source $HOME/.bashrcd/local.sh
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-. "$HOME/.cargo/env"
 eval "$(zoxide init bash)"
