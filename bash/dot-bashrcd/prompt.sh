@@ -21,6 +21,10 @@ __prompt_command() {
     if [ -n "$VIRTUAL_ENV" ] ; then
         PS1+="(venv)|"
     fi
+    
+    if [ -n "$container" ] ; then
+	PS1+="${RYellow}(con)${ColorOff}|"
+    fi
 
     if [ $EUID == 0 ] ; then
         PS1+="${BRed}^${ColorOff}"

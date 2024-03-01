@@ -80,12 +80,6 @@ function _go_back {
     fi
 }
 
-# File extractor
-# usage: extract <file>
-function _extract {
-	python3 $HOME/.bashrcd/extract.py "$@"
-}
-
 _h2d(){
 	printf "%d\n" $1
 }

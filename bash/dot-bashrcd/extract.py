@@ -39,16 +39,12 @@ def extract(path: str, one_top_level: bool, force_local: bool, keep: bool = Fals
     elif m('.zip'):
         return ('unzip', path)
     elif m('.rar'):
-        w()
         return ('unrar', 'x', path)
     elif m('.Z'):
-        w()
         return ('uncompress', path)
     elif m('.7z'):
-        w()
         return ('7z', 'x', path)
     elif m('.snz'):
-        w()
         return ('snunzip', path)
     else:
         raise ValueError('Unsupported file type')

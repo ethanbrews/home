@@ -10,7 +10,7 @@ export TERM=xterm-256color
 
 source $HOME/.bashrcd/prompt.sh
 source $HOME/.bashrcd/functions.sh
-source $HOME/.bashrcd/aliases.sh
+
 if [ -f $HOME/.bashrcd/local.sh ]; then 
 	source $HOME/.bashrcd/local.sh
 fi
@@ -18,4 +18,29 @@ fi
 if [ -f ~/.fzf.bash ]; then
 	source ~/.fzf.bash
 fi
-eval "$(zoxide init bash)"
+
+alias ..='_go_back'
+alias ll='ls -la'
+alias h2d='_h2d'
+alias d2h='_d2h'
+alias i='_show_info'
+alias tm='tmux new-session -A -s main'
+
+if [ -x nvim ]; then
+    alias vim='nvim'
+fi
+
+if [ -x python3 ] && [ -f "$HOME/bin/scripts/extract.py" ]; then
+    alias extract='python3 $HOME/bin/scripts/extract.py'
+fi
+
+if [ -x bat ]; then
+    alias cat='bat --plain'
+fi
+
+if [ -x zoxide ]; then
+    eval "$(zoxide init bash)"
+    alias cd='_zl'
+else 
+    alias cd='_cl'
+fi
