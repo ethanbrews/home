@@ -20,6 +20,8 @@ Now copy config files using `stow [dir] --dotfiles`
 stow bash --dotfiles
 stow tmux --dotfiles
 stow vim --dotfiles
+stow nvim
+stow bin
 ```
 
 Finally, source the .bashrc file
@@ -36,7 +38,6 @@ $ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 $ ~/.fzf/install
 ```
 
-
 ### Install manually:
 - [Rust + Cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html)
 - [Python](https://devguide.python.org/getting-started/setup-building/)
@@ -46,5 +47,5 @@ $ ~/.fzf/install
 
 ### RipGrep
 ```bash
-cargo install ripgrep
+cat cargo-packages.txt | xargs cargo install -y
 ```
