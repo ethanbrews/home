@@ -1,6 +1,6 @@
 # Source required functions and optional prompt
-source '$HOME/.bashrcd/functions.sh'
-source '$HOME/.bashrcd/prompt.sh'
+source "$HOME/.bashrcd/functions.sh"
+source "$HOME/.bashrcd/prompt.sh"
 
 # Config variables
 export TERM=xterm-256color
