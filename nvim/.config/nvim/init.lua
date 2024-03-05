@@ -54,7 +54,7 @@ vim.keymap.set('n', 'gb', ':Git blame<CR>')
 
 
 -- Keybindings (Hop)
-vim.keymap.set('n', 'fw', ':HopWord<CR>', { silent = true })
+vim.keymap.set('n', '<Leader>w', ':HopWord<CR>', { silent = true })
 
 -- Keybindings (Vim)
 

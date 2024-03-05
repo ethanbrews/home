@@ -1,10 +1,8 @@
 tmux
 vim
 less
-zoxide
 htop
 ncdu
-ag
 cowsay
 tree
 git
