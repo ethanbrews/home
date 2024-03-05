@@ -1,8 +1,14 @@
+# Unalias to prevent self-referencing (causes zoxide crash)
+unalias cd ls 2> /dev/null
+
 # Source required functions and optional prompt
 source "$HOME/.bashrcd/functions.sh"
 source "$HOME/.bashrcd/prompt.sh"
 
 # Config variables
+if [ -d "$HOME/.cargo/bin" ]; then
+    PATH="$PATH:$HOME/.cargo/bin"
+fi
 export TERM=xterm-256color
 if _can_exec nvim; then
     export EDITOR=nvim
@@ -14,6 +20,7 @@ export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 # Add ./local folders to $PATH
 export MANPATH="$HOME/local/share/man:$MANPATH"
 export PATH="$HOME/local/bin:$PATH"
+export PYTHONPATH="$HOME/local/scripts:$PYTHONPATH"
 
 # System
 alias ..='_go_back'
@@ -36,7 +43,7 @@ if _can_exec exa; then
 fi
 
 # fzf
-trysource "~/.fzf.bash"
+trysource "$HOME/.fzf.bash"
 
 # extract.py script
 pyalias 'extract' "$HOME/local/scripts/extract.py"

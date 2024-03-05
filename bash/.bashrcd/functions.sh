@@ -11,6 +11,8 @@ function optalias() {
 
     if _can_exec $executable; then
         alias $alias="$value"
+    else
+        echo "No such command $executable"
     fi
 }
 
@@ -61,12 +63,13 @@ function _cl {
         # shellcheck disable=SC1091
         source .env.sh
     fi
-    ls --color=auto
+    ls
     return $EXIT
 }
 
 # _zl $1: cd to $1 then ls. If $1 is a file, then go to containing folder. If 2+ arguments are provided, use zoxide.
 function _zl {
+    EXIT=0
 	# Normal cd behaviour with 0 or 1 args
 	if [ "$#" -eq 0 ]; then	
 		eval "z"
@@ -89,13 +92,13 @@ function _zl {
 		EXIT=$?
 	fi
 	
-    	if [ -f .env.sh ] ; then
-        	# shellcheck disable=SC1091
-        	source .env.sh
+    if [ -f .env.sh ] ; then
+        # shellcheck disable=SC1091
+        source .env.sh
 	fi
 
 	ls --color=auto
-	return #EXIT
+	return $EXIT
 }
 
 # _go_back $1=1: Go back $1 directories
