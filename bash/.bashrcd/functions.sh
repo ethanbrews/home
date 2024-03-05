@@ -61,7 +61,7 @@ function _cl {
         # shellcheck disable=SC1091
         source .env.sh
     fi
-    ls
+    ls --color=auto
     return $EXIT
 }
 
@@ -94,7 +94,7 @@ function _zl {
         	source .env.sh
 	fi
 
-	ls
+	ls --color=auto
 	return #EXIT
 }
 
