@@ -10,6 +10,14 @@ git clone git@github.com:ethanbrews/home.git dotfiles
 cd dotfiles
 ```
 
+Setup local files:
+```bash
+mkdir ~/local/usr/bin
+mkdir ~/local/usr/share
+mkdir ~/local/lib
+mkdir ~/local/scripts
+```
+
 Install apt packages:
 ```bash
 cat packages.txt | xargs sudo apt install -y
