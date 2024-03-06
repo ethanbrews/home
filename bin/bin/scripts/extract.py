@@ -5,7 +5,7 @@ from subprocess import run
 from os.path import splitext
 from os import remove as rm_file
 
-def extract(path: str, one_top_level: bool, force_local: bool, keep: bool = False):
+def extract(path: str, one_top_level: bool, remote: bool, keep: bool = False):
     m = lambda ext: path.endswith(ext)
 
     extracted_name = splitext(path)[0]
@@ -16,7 +16,7 @@ def extract(path: str, one_top_level: bool, force_local: bool, keep: bool = Fals
     if one_top_level:
         _tar_args.append('--one-top-level')
         _zip_args.extend(['-d', extracted_name])
-    if force_local:
+    if not remote:
         _tar_args.append('--force-local')
     if keep:
         _bunzip2_args.append('--keep')
@@ -55,10 +55,10 @@ if __name__ == '__main__':
     parser.add_argument('filename', nargs='+')
     parser.add_argument('-d', '--one-top-level', action='store_true', help='Extract to a new directory')
     parser.add_argument('-p', '--preview', action='store_true', help='Print the command that would be executed then exit')
-    parser.add_argument('-l', '--force-local', action='store_true', help='Force local for filenames that look like remote files')
+    parser.add_argument('-R', '--remote', action='store_true', help='Allow tar to look remotely for files that look like remote files')
     args = parser.parse_args()
     for f in args.filename:
-        cmd = join(extract(f, one_top_level=args.one_top_level, force_local=args.force_local))
+        cmd = join(extract(f, one_top_level=args.one_top_level, remote=args.remote))
         print(cmd)
         if not args.preview:
             completed_process = run(cmd, shell=True)
