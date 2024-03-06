@@ -18,8 +18,8 @@ fi
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 
 # Add ./local folders to $PATH
-export MANPATH="$HOME/local/share/man:$MANPATH"
-export PATH="$HOME/local/bin:$PATH"
+export MANPATH="$HOME/local/usr/share/man:$MANPATH"
+export PATH="$HOME/local/usr/bin:$PATH"
 export PYTHONPATH="$HOME/local/scripts:$PYTHONPATH"
 
 # System
