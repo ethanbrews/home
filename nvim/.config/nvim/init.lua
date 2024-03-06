@@ -54,7 +54,18 @@ vim.keymap.set('n', 'gb', ':Git blame<CR>')
 
 
 -- Keybindings (Hop)
-vim.keymap.set('n', 'fw', ':HopWord<CR>', { silent = true })
+vim.keymap.set('n', '<Leader>f', ':HopWord<CR>', { silent = true })
+
+local hop = require('hop')
+local directions = require('hop.hint').HintDirection
+
+vim.keymap.set('', '<Leader>w', function()
+    hop.hint_words({ direction = directions.AFTER_CURSOR, current_line_only = false })
+end, {remap=true})
+
+vim.keymap.set('', '<Leader>b', function()
+    hop.hint_words({ direction = directions.BEFORE_CURSOR, current_line_only = false })
+end, {remap=true})
 
 -- Keybindings (Vim)
 

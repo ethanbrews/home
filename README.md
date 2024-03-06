@@ -15,11 +15,13 @@ Install apt packages:
 cat packages.txt | xargs sudo apt install -y
 ```
 
-Now copy config files using `stow [dir] --dotfiles`
+Now copy config files using `stow [dir]`
 ```bash
-stow bash --dotfiles
-stow tmux --dotfiles
-stow vim --dotfiles
+stow bash
+stow tmux
+stow vim
+stow nvim
+stow bin
 ```
 
 Finally, source the .bashrc file
@@ -32,19 +34,38 @@ source ~/.bashrc
 ### Fuzzy Finder
 
 ```bash
-$ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-$ ~/.fzf/install
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install
+```
+### Rust + Cargo
+
+```bash
+curl https://sh.rustup.rs -sSf | sh
 ```
 
+### Neovim
 
-### Install manually:
-- [Rust + Cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html)
+```bash
+sudo apt-get install ninja-build gettext cmake unzip curl
+git clone https://github.com/neovim/neovim
+cd neovim
+git checkout stable
+make CMAKE_BUILD_TYPE=RelWithDebInfo
+PREFIX=$HOME/local make install
+```
+
+See full steps [here](https://github.com/neovim/neovim/blob/master/BUILD.md)
+
+### Cargo Packages
+```bash
+cat cargo-packages.txt | xargs cargo install -y
+```
+
+### Optional Extras:
 - [Python](https://devguide.python.org/getting-started/setup-building/)
-- [NeoVim](https://github.com/neovim/neovim/blob/master/BUILD.md)
 - [LunarVim](https://www.lunarvim.org/)
 - [NerdFonts](https://github.com/ryanoasis/nerd-fonts?tab=readme-ov-file#option-6-install-script)
 
-### RipGrep
-```bash
-cargo install ripgrep
-```
+# Windows Terminal
+
+Copy the colours to the windows terminal .json file, accessible via the settings page.
