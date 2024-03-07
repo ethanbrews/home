@@ -11,8 +11,6 @@ function optalias() {
 
     if _can_exec $executable; then
         alias $alias="$value"
-    else
-        echo "No such command $executable"
     fi
 }
 
@@ -97,7 +95,13 @@ function _zl {
         source .env.sh
 	fi
 
-	ls --color=auto
+    N_FILES=$(ls -l | wc -l)
+    
+    if [ "$N_FILES" -gt 200 ]; then
+        echo "$N_FILES items in directory"
+    else
+	    ls --color=auto
+    fi
 	return $EXIT
 }
 
