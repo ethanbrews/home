@@ -58,7 +58,7 @@ if __name__ == '__main__':
     parser.add_argument('-R', '--remote', action='store_true', help='Prevent default behaviour of force local for filenames that look like remote files')
     args = parser.parse_args()
     for f in args.filename:
-        cmd = join(extract(f, one_top_level=args.one_top_level, remote=args.remote))
+        cmd = join(extract(f, one_top_level=args.one_top_level, allow_remote=args.remote))
         print(cmd)
         if not args.preview:
             completed_process = run(cmd, shell=True)
