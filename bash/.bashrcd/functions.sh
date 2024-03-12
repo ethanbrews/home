@@ -30,6 +30,20 @@ function _trysource() {
     fi
 }
 
+# Print directory contents used in _cl, _zl
+function _print_dir() {
+    N_FILES=$(ls -l | wc -l)
+    if [ "$N_FILES" -gt 200 ]; then
+        echo -e "\e[34m$N_FILES\e[0m items in directory"
+    else
+        if _can_exec "exa"; then
+            exa
+        else
+	        ls --color=auto
+        fi
+    fi
+}
+
 # _cl $1: cd to $1 then ls. If $1 is a file, then go to containing folder.
 function _cl {
     EXIT=0
@@ -61,7 +75,7 @@ function _cl {
         # shellcheck disable=SC1091
         source .env.sh
     fi
-    ls
+    _print_dir
     return $EXIT
 }
 
@@ -95,13 +109,8 @@ function _zl {
         source .env.sh
 	fi
 
-    N_FILES=$(ls -l | wc -l)
+    _print_dir
 
-    if [ "$N_FILES" -gt 200 ]; then
-        echo "$N_FILES items in directory"
-    else
-	    ls --color=auto
-    fi
 	return $EXIT
 }
 
