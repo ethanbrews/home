@@ -1,4 +1,6 @@
+
 -- Plugin Manager Setup
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -12,10 +14,11 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+
 -- Plugins
 
 local plugins = {
-	{ "smoka7/hop.nvim", opts = {  } },
+	{ "smoka7/hop.nvim" },
 	{ "nvim-telescope/telescope.nvim", dependencies = { 'nvim-lua/plenary.nvim' } },
 	{ "ThePrimeagen/harpoon", dependencies = { 'nvim-lua/plenary.nvim' } },
 	{ "tpope/vim-fugitive" },
@@ -34,11 +37,10 @@ local plugins = {
         "nvim-tree/nvim-web-devicons", -- optional [for devicons in telescope or fzf]
       },
       opts = {
-        disable_maps = false, -- "true" disables default keymaps
-        skip_input_prompt = false, -- "true" doesn't ask for input
+        disable_maps = false, 
+        skip_input_prompt = false,
         prefix = "<leader>c", -- prefix to trigger maps
 
-        -- cscope related defaults
         cscope = {
           exec = "cscope",
           picker = "telescope",
@@ -51,6 +53,7 @@ local plugins = {
       }
     }
 }
+
 
 -- Basic Settings
 
@@ -73,10 +76,16 @@ vim.opt.autoindent = true
 vim.opt.ttyfast = true
 vim.opt.wildmode = { 'longest', 'list' }
 vim.opt.listchars = { eol = '$', tab = '>>', trail = '•' }
-vim.fn.matchadd('errorMsg', [[\s\+$]])
 vim.opt.mouse = ""
 vim.opt.termguicolors = true
 vim.opt.cursorline = true
+vim.fn.matchadd('errorMsg', [[\s\+$]]) -- Highlight trailing whitespace as an error
+
+vim.keymap.set('n', 'tn', ':bnext<CR>')
+vim.keymap.set('n', 'tp', ':bprevious<CR>')
+vim.keymap.set('n', ';;', ':set list!<CR>', { silent = true })  -- Toggle whitespace highlighting
+vim.keymap.set('n', '<C-l>', ':noh<CR>:let @/ = ""<CR>', { nowait = true, silent = true }) -- Clear search
+
 
 -- Start plugin manager
 require("lazy").setup(plugins)
@@ -98,7 +107,10 @@ require'nvim-treesitter.configs'.setup {
 require("onedarkpro").setup({
     highlights = {
         CursorLine = { bg = "#353a45" },
-        CursorLineNR = { fg = "#dcc7a0" }
+        CursorLineNR = { fg = "#dcc7a0" },
+        HopNextKey = { fg = "#67b0ff", bg = "#414858" },
+        HopNextKey1 = { fg = "#ffdd88", bg = "#414858" },
+        HopNextKey2 = { fg = "#ccb06c", bg = "#414858" },
     }
 })
 
@@ -115,25 +127,23 @@ vim.keymap.set('n', 'gb', ':Git blame<CR>')
 
 
 -- Keybindings (Hop)
-vim.keymap.set('n', '<Leader>f', ':HopWord<CR>', { silent = true })
 
 local hop = require('hop')
+hop.setup()
 local directions = require('hop.hint').HintDirection
 
-vim.keymap.set('', '<Leader>w', function()
+vim.keymap.set('', '<Leader>f', function()
     hop.hint_words({ direction = directions.AFTER_CURSOR, current_line_only = false })
-end, {remap=true})
+end, { remap = true })
 
-vim.keymap.set('', '<Leader>b', function()
+vim.keymap.set('', '<Leader>F', function()
     hop.hint_words({ direction = directions.BEFORE_CURSOR, current_line_only = false })
-end, {remap=true})
+end, { remap = true })
 
--- Keybindings (Vim)
+vim.keymap.set('', '<Leader>w', function()
+    hop.hint_words({ direction = directions.AFTER_CURSOR, current_line_only = true })
+end, { remap = true })
 
-vim.keymap.set('n', 'tn', ':bnext<CR>')
-vim.keymap.set('n', 'tp', ':bprevious<CR>')
-vim.keymap.set('n', ';;', ':set list!<CR>', { silent = true })
-vim.keymap.set('n', '<C-l>', ':noh<CR>:let @/ = ""<CR>', { nowait = true, silent = true })
 
 -- Keybindings (Harpoon)
 
@@ -168,7 +178,6 @@ vim.keymap.set('n', 'tr', function()
 end, { silent = true })
 
 
-
 -- Keybindings (Telescope)
 
 local telescope = require('telescope')
@@ -194,3 +203,4 @@ telescope.setup {
     }
   }
 }
+
