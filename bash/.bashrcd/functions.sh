@@ -4,7 +4,7 @@ function _can_exec {
 }
 
 # optalias $1, $2, $3: Create an alias, $2=$3 if $1 is found in $PATH
-function optalias() {
+function _optalias() {
     local executable=${1}
     local alias=${2}
     local value=${3}
@@ -15,16 +15,16 @@ function optalias() {
 }
 
 # optalias $1, $2: Create an alias, $1, to a python script, $2, if it exists
-function pyalias() {
+function _pyalias() {
     local alias=${1}
     local script=${2}
     
     if _can_exec python3 $$ [ -f $script ]; then
-        alias $alias='python3 "$script"'
+        alias $alias="python3 '$script'"
     fi
 }
 
-function trysource() {
+function _trysource() {
     if [ -f "$1" ]; then
         source "$1"
     fi
@@ -96,7 +96,7 @@ function _zl {
 	fi
 
     N_FILES=$(ls -l | wc -l)
-    
+
     if [ "$N_FILES" -gt 200 ]; then
         echo "$N_FILES items in directory"
     else
@@ -123,12 +123,12 @@ function _go_back {
 }
 
 # _h2d $1: Read $1 in hexadecimal form and print in decimal form
-function _h2d(){
+function h2d(){
 	printf "%d\n" $1
 }
 
 # _d2h $1: Read $1 in decimal form and print in hexadecimal form
-function _d2h(){
+function d2h(){
 	printf "%x\n" $1
 }
 
@@ -139,4 +139,43 @@ function _show_info {
 	FILENAME=$(stat -c%n "$1")
 
 	echo "$FILESIZE $FILENAME ($FILETYPE)"
+}
+
+# Remove consecutive duplicate lines from the input
+dedupe() {
+ sed -E '
+  $!{
+   N;
+   s/[ \t]+$//;
+   /^(.*)\n\1$/!P;
+   D;
+  }
+ ';
+}
+
+# Remove any duplicate lines from the input
+norepeat() {
+ sed -n -E '
+  s/[ \t]+$//;
+  G;
+  /^(\n){2,}/d;
+  /^([^\n]+).*\n\1(\n|$)/d;
+  h;
+  P;
+  ';
+}
+
+function _tm() { 
+    if [ "$#" -eq 0 ]; then
+        N_SESSIONS=$(tmux list-sessions | wc -l)
+        if [ "$N_SESSIONS" -eq 0 ]; then
+            tmux new -s "main"
+        elif [ "$N_SESSIONS" -eq 1 ]; then
+            tmux attach-session
+        else
+            tmux attach-session -t $(tmux list-sessions | fzf | awk -F: '{print $1}')
+        fi
+    else
+        tmux attach-session -t $1
+    fi
 }

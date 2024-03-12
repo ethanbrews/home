@@ -24,8 +24,6 @@ export PYTHONPATH="$HOME/local/scripts:$PYTHONPATH"
 
 # System
 alias ..='_go_back'
-alias h2d='_h2d'
-alias d2h='_d2h'
 alias i='_show_info'
 
 # dircolors
@@ -43,15 +41,15 @@ if _can_exec exa; then
 fi
 
 # fzf
-trysource "$HOME/.fzf.bash"
+_trysource "$HOME/.fzf.bash"
 
 # extract.py script
-pyalias 'extract' "$HOME/local/scripts/extract.py"
+_pyalias 'extract' "$HOME/local/scripts/extract.py"
 
 # Misc
-optalias 'tmux' 'tm' 'tmux new-session -A -s main'
-optalias 'nvim' 'vim' 'nvim'
-optalias 'bat' 'cat' 'bat --plain'
+_optalias 'tmux' 'tm' '_tm'
+_optalias 'nvim' 'vim' 'nvim'
+_optalias 'bat' 'cat' 'bat --plain'
 
 # Zoxide
 if _can_exec zoxide; then
@@ -62,4 +60,4 @@ else
 fi
 
 # Finally, source the non version controlled local.sh
-trysource "$HOME/.bashrcd/local.sh"
+_trysource "$HOME/.bashrcd/local.sh"
