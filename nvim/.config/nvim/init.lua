@@ -76,6 +76,7 @@ vim.opt.listchars = { eol = '$', tab = '>>', trail = '•' }
 vim.fn.matchadd('errorMsg', [[\s\+$]])
 vim.opt.mouse = ""
 vim.opt.termguicolors = true
+vim.opt.cursorline = true
 
 -- Start plugin manager
 require("lazy").setup(plugins)
@@ -94,7 +95,12 @@ require'nvim-treesitter.configs'.setup {
 
 -- Colorscheme
 
-require("onedarkpro").setup({ })
+require("onedarkpro").setup({
+    highlights = {
+        CursorLine = { bg = "#353a45" },
+        CursorLineNR = { fg = "#dcc7a0" }
+    }
+})
 
 vim.cmd("colorscheme onedark")
 
@@ -136,22 +142,16 @@ harpoon.setup({
     global_settings = {
         -- sets the marks upon calling `toggle` on the ui, instead of require `:w`.
         save_on_toggle = false,
-
         -- saves the harpoon file upon every change. disabling is unrecommended.
         save_on_change = true,
-
         -- sets harpoon to run the command immediately as it's passed to the terminal when calling `sendCommand`.
         enter_on_sendcmd = false,
-
         -- closes any tmux windows harpoon that harpoon creates when you close Neovim.
         tmux_autoclose_windows = false,
-
         -- filetypes that you want to prevent from adding to the harpoon list menu.
         excluded_filetypes = { "harpoon" },
-
         -- set marks specific to each git branch inside git repository
         mark_branch = false,
-
         -- enable tabline with harpoon marks
         tabline = false,
         tabline_prefix = "   ",
@@ -171,21 +171,23 @@ end, { silent = true })
 
 -- Keybindings (Telescope)
 
-local telescope = require('telescope.builtin')
--- telescope.load_extension('harpoon')
+local telescope = require('telescope')
+local ts_builtin = require('telescope.builtin')
+telescope.load_extension('harpoon')
 
-vim.keymap.set('n', 'tl', telescope.buffers)
-vim.keymap.set('n', 'tf', telescope.find_files)
-vim.keymap.set('n', 'tq', telescope.help_tags)
-vim.keymap.set('n', 'tg', telescope.live_grep)
-vim.keymap.set('n', 'th', telescope.oldfiles)
-vim.keymap.set('n', 't;', telescope.command_history)
-vim.keymap.set('n', 'tt', telescope.tags)
-vim.keymap.set('n', 'tm', telescope.marks)
-vim.keymap.set('n', 'tq', telescope.registers)
-vim.keymap.set('n', 't/', telescope.man_pages)
+vim.keymap.set('n', 'tl', ts_builtin.buffers)
+vim.keymap.set('n', 'tf', ts_builtin.find_files)
+vim.keymap.set('n', 'tq', ts_builtin.help_tags)
+vim.keymap.set('n', 'tg', ts_builtin.live_grep)
+vim.keymap.set('n', 'th', ts_builtin.oldfiles)
+vim.keymap.set('n', 't;', ts_builtin.command_history)
+vim.keymap.set('n', 'tt', ts_builtin.tags)
+vim.keymap.set('n', 'tm', ts_builtin.marks)
+vim.keymap.set('n', 'tq', ts_builtin.registers)
+vim.keymap.set('n', 't/', ts_builtin.man_pages)
+vim.keymap.set('n', 'tr', telescope.extensions.harpoon.marks)
 
-require "telescope".setup {
+telescope.setup {
   defaults = {
     preview = {
       treesitter = false
