@@ -32,7 +32,7 @@ __prompt_command() {
         PS1+="${BGreen}[${ColorOff}"
     fi
 
-    PS1+="$(date +'%H:%M:%S') ${RGreen}\w${ColorOff}"
+    PS1+="$(TZ='Europe/London' date +'%H:%M:%S') ${RGreen}\w${ColorOff}"
 
     GIT_BRANCH=$(git branch 2>/dev/null | awk '/^\*/ {print $2}' 2>/dev/null)
     if [ -n "$GIT_BRANCH" ] ; then

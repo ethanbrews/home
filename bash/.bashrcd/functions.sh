@@ -87,16 +87,13 @@ function _zl {
 		eval "z"
 		EXIT=$?
 	elif [ "$#" -eq 1 ]; then
-		if [ -d "$1" ] || [ "$1" == "-" ]; then
-			eval "z '$1'"
-			EXIT=$?
-		elif [ -f "$1" ]; then
-                        DIRNAME=$(dirname "$1")
-                        eval "\cd '$DIRNAME'"
-                        EXIT=$?
+		if [ -f "$1" ]; then
+			DIRNAME=$(dirname "$1")
+            eval "\cd '$DIRNAME'"
+            EXIT=$?	
 		else
-			echo "_zl: $1: No such file or directory"
-			EXIT=1
+			eval "z $@"
+			EXIT=$?
 		fi
 	else
 		# Let z deal with 2+ args
