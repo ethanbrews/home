@@ -44,7 +44,7 @@ local plugins = {
         cscope = {
           exec = "cscope",
           picker = "telescope",
-          skip_picker_for_single_result = false,
+          skip_picker_for_single_result = true,
           project_rooter = {
             enable = false,
             change_cwd = false
@@ -80,6 +80,7 @@ vim.opt.mouse = ""
 vim.opt.termguicolors = true
 vim.opt.cursorline = true
 vim.fn.matchadd('errorMsg', [[\s\+$]]) -- Highlight trailing whitespace as an error
+vim.opt.shortmess:append("S")
 
 vim.keymap.set('n', 'tn', ':bnext<CR>')
 vim.keymap.set('n', 'tp', ':bprevious<CR>')
@@ -111,6 +112,7 @@ require("onedarkpro").setup({
         HopNextKey = { fg = "#67b0ff", bg = "#414858" },
         HopNextKey1 = { fg = "#ffdd88", bg = "#414858" },
         HopNextKey2 = { fg = "#ccb06c", bg = "#414858" },
+        Search = { underline = true, fg = "#e5c07b", bg = "#414858" }
     }
 })
 
