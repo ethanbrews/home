@@ -64,6 +64,13 @@ PREFIX=$HOME/local make install
 
 See full steps [here](https://github.com/neovim/neovim/blob/master/BUILD.md)
 
+There is sometimes an issue where treesitter errors are shown on help pages. To fix this run:
+```
+:TSUninstall vimdoc
+(restart neovim)
+:TSInstall vimdoc
+```
+
 ### Cargo Packages
 ```bash
 cat cargo-packages.txt | xargs cargo install -y
