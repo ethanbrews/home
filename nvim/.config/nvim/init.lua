@@ -61,6 +61,10 @@ vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
     pattern = { "*.triage" },
     command = "setfiletype log"
 })
+vim.api.nvim_create_autocmd({ 'VimLeave' }, {
+    pattern = { "*" },
+    command = "set guicursor=a:ver5-blinkon2-blinkoff1"
+});
 
 vim.api.nvim_create_user_command('Vb', 'normal! <C-v>', {})
 
