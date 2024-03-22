@@ -1,6 +1,6 @@
 param(
     [switch]$InstallWinget,
-    [switch]$NoConfirm
+    [string[]]$InstallPackages
 )
 
 Add-Type -AssemblyName System.Windows.Forms
@@ -10,24 +10,27 @@ function Ask-Question {
         [string]$Title,
         [string]$Message = "",
         [bool]$Default,
-        [string]$Yes = "Yes",
-        [string]$No = "No"
+        [string]$Yes = "Continue with installation",
+        [string]$No = "Skip this stage"
     )
 
-    if ($NoConfirm) {
-        return $Default
-    }
+    $choices = @(
+        [System.Management.Automation.Host.ChoiceDescription]::new("&Yes", "$Yes")
+        [System.Management.Automation.Host.ChoiceDescription]::new("&No", "$No")
+        [System.Management.Automation.Host.ChoiceDescription]::new("&Abort", "Abort installation and exit immediately")
+    )
 
-    $yes = New-Object System.Management.Automation.Host.ChoiceDescription "&Yes",$Yes
-    $no = New-Object System.Management.Automation.Host.ChoiceDescription "&No",$No
-    $options = [System.Management.Automation.Host.ChoiceDescription[]]($yes, $no)
-
-    $defaultIndex = 0
+    $defaultIndex = 1
     if ($Default) {
-        $defaultIndex = 1
+        $defaultIndex = 0
     }
 
-    return $host.ui.PromptForChoice($Title, $Message, $options, $defaultIndex)
+    $result = $host.ui.PromptForChoice($Title, $Message, $choices, $defaultIndex)
+
+    if ($result -eq 2) {
+        exit 1
+    }
+    return $result -eq 0
 }
 
 function Is-RunningAsAdmin {
@@ -36,23 +39,25 @@ function Is-RunningAsAdmin {
 }
 
 function Install-WinGet {
+    $tempFolderPath = [System.IO.Path]::GetTempPath()
     $progressPreference = 'silentlyContinue'
     $latestWingetMsixBundleUri = $(Invoke-RestMethod "https://api.github.com/repos/microsoft/winget-cli/releases/latest").assets.browser_download_url | Where-Object {$_.EndsWith(".msixbundle")}
     $latestWingetMsixBundle = $latestWingetMsixBundleUri.Split("/")[-1]
+    $latestWingetMsixBundlePath = Join-Path -Path $tempFolderPath -ChildPath $latestWingetMsixBundle
+    $vcLibsFile = Join-Path -Path $tempFolderPath -ChildPath "Microsoft.VCLibs.x64.14.00.Desktop.appx"
+
     Write-Information "Downloading winget to artifacts directory..."
-    Invoke-WebRequest -Uri $latestWingetMsixBundleUri -OutFile "./$latestWingetMsixBundle"
-    Invoke-WebRequest -Uri "https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx" -OutFile "Microsoft.VCLibs.x64.14.00.Desktop.appx"
-    # Only install VCLibs if it needs to be installed/upgraded
-    $FilePath = ".\Microsoft.VCLibs.x86.14.00.appx"
-    $FileVersion = (Get-ItemProperty -Path $FilePath).VersionInfo.ProductVersion
+    Invoke-WebRequest -Uri $latestWingetMsixBundleUri -OutFile $latestWingetMsixBundlePath
+    Invoke-WebRequest -Uri "https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx" -OutFile $vcLibsFile
+
+    $FileVersion = (Get-ItemProperty -Path $vcLibsFile).VersionInfo.ProductVersion
     $HighestInstalledVersion = Get-AppxPackage -Name Microsoft.VCLibs* |
         Sort-Object -Property Version |
         Select-Object -ExpandProperty Version -Last 1
     if ( $HighestInstalledVersion -lt $FileVersion ) {
-        Add-AppxPackage $FilePath
+        Add-AppxPackage $vcLibsFile
     }
-
-    Add-AppxPackage $latestWingetMsixBundle
+    Add-AppxPackage $latestWingetMsixBundlePath
 }
 
 function Enable-AutomaticLogon {
@@ -74,3 +79,15 @@ function Enable-AutomaticLogon {
         Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name "DefaultDomainName" -Value $Domain
     }
 }
+
+$isDotSourced = $MyInvocation.InvocationName -eq '.' -or $MyInvocation.Line -eq ''
+if ($isDotSourced) {
+    exit 0
+}
+
+if ($InstallWinGet -or (Ask-Question -Title "Install WinGet" -Message "Install the latest WinGet package?" -Default $false)) {
+    Write-Host "Installing WinGet"
+    Install-WinGet
+}
+
+
