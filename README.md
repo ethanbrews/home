@@ -81,6 +81,11 @@ cat cargo-packages.txt | xargs cargo install -y
 - [LunarVim](https://www.lunarvim.org/)
 - [NerdFonts](https://github.com/ryanoasis/nerd-fonts?tab=readme-ov-file#option-6-install-script)
 
-# Windows Terminal
+# Windows
 
 Copy the colours to the windows terminal .json file, accessible via the settings page.
+
+Setup and install apps with:
+```powershell
+iex "& { $(iwr 'https://raw.githubusercontent.com/ethanbrews/home/main/Windows-Setup.ps1') }"
+```
