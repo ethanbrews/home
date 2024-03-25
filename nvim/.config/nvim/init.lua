@@ -15,7 +15,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 
--- Plugins
+
 
 local plugins = {
 	{ "smoka7/hop.nvim" },
@@ -24,6 +24,7 @@ local plugins = {
 	{ "tpope/vim-fugitive" },
 	{ "scrooloose/nerdcommenter" },
 	{ "nvim-treesitter/nvim-treesitter" },
+	{ "preservim/nerdtree" },
     {
           "olimorris/onedarkpro.nvim",
           priority = 1000, -- Ensure it loads first
@@ -81,6 +82,8 @@ vim.opt.termguicolors = true
 vim.opt.cursorline = true
 vim.fn.matchadd('errorMsg', [[\s\+$]]) -- Highlight trailing whitespace as an error
 vim.opt.shortmess:append("S")
+vim.opt.foldmethod = 'syntax'
+vim.opt.foldlevel = 99
 
 vim.keymap.set('n', 'tn', ':bnext<CR>')
 vim.keymap.set('n', 'tp', ':bprevious<CR>')
