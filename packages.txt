@@ -7,3 +7,9 @@ cowsay
 tree
 git
 stow
+curl
+wget
+build-essential
+rsync
+man
+cscope
