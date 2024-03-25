@@ -10,12 +10,9 @@ git clone git@github.com:ethanbrews/home.git dotfiles
 cd dotfiles
 ```
 
-Setup local files:
+Setup local directories to avoid stow starting to track unwanted files in git later on:
 ```bash
-mkdir ~/local/usr/bin
-mkdir ~/local/usr/share
-mkdir ~/local/lib
-mkdir ~/local/scripts
+mkdir -p ~/local/usr/{bin,share} ~/local/{lib,scripts}
 ```
 
 Install apt packages:
@@ -76,10 +73,8 @@ There is sometimes an issue where treesitter errors are shown on help pages. To 
 cat cargo-packages.txt | xargs cargo install -y
 ```
 
-### Optional Extras:
+### Python:
 - [Python](https://devguide.python.org/getting-started/setup-building/)
-- [LunarVim](https://www.lunarvim.org/)
-- [NerdFonts](https://github.com/ryanoasis/nerd-fonts?tab=readme-ov-file#option-6-install-script)
 
 # Windows
 
@@ -89,3 +84,5 @@ Setup and install apps with:
 ```powershell
 iex "& { $(iwr 'https://raw.githubusercontent.com/ethanbrews/home/main/Windows-Setup.ps1') }"
 ```
+
+[NerdFonts](https://github.com/ryanoasis/nerd-fonts) - I just use the [JetBrains Mono](https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/JetBrainsMono.zip) font.
