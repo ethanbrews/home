@@ -1,6 +1,7 @@
 param(
     [switch]$InstallWinget,
     [switch]$InstallPackages,
+    [switch]$InstallFonts,
     [switch]$All
 )
 
@@ -44,6 +45,17 @@ function Ask-Question {
         exit 1
     }
     return $result -eq 0
+}
+
+function Add-Font {
+    param(
+        [System.IO.FileSystemInfo]$File
+    )
+    $Destination = (New-Object -ComObject Shell.Application).Namespace(0x14)
+    If (-not(Test-Path "C:\Windows\Fonts\$($File.Name)")) {
+        Write-Information "Installing $($File.Name)"
+        $Destination.CopyHere($File,0x10)
+    }
 }
 
 function Show-MultiSelectMenu {
@@ -817,16 +829,44 @@ $PackageCollections = @{
     )
 }
 
+$WindowsFeatures = @{
+    "Hyper-V" = "Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-All -NoRestart"
+    "Microsoft Print to PDF" = "Enable-WindowsOptionalFeature -Online -FeatureName PrintToPDFServices -NoRestart"
+    "Telnet Client" = "Enable-WindowsOptionalFeature -Online -FeatureName TelnetClient -NoRestart"
+    "Virtual Machine Platform" = "Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform -NoRestart"
+    "Windows Hypervisor Platform" = "Enable-WindowsOptionalFeature -Online -FeatureName HypervisorPlatform -NoRestart"
+    "Windows Sandbox" = "Enable-WindowsOptionalFeature -Online -FeatureName Containers-DisposableClientVM -NoRestart"
+    "Windows Subsystem for Linux" = "Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux -NoRestart"
+ }
+
+$Fonts = @(
+    "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/JetBrainsMono.zip",
+    "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/ComicShannsMono.zip"
+)
+
 $isDotSourced = $MyInvocation.InvocationName -eq '.' -or $MyInvocation.Line -eq ''
 if ($isDotSourced) {
     exit 0
+}
+
+function Ask-ForRestart {
+    if (Is-RunningAsAdmin) {
+        Write-Warning "Changes may not be applied until you restart your PC"
+    }
+    if (Ask-Question -Title "Restart required" -Message "Restart your PC now?" -Default $true -CanAbort $false -No "Later" -YesDescription "Restart now" -NoDescription "Restart manually later on" -RequiresInput) {
+        Restart-Computer -Force
+    }
+}
+
+if (-not (Is-RunningAsAdmin)) {
+    Write-Warning "Some features of this script are unavailable as a non-elevated user."
 }
 
 if ($InstallWinGet -or (Ask-Question -Title "Install WinGet" -Message "Install the latest WinGet package?" -Default $true)) {
     Write-Host "Installing WinGet"
     Install-WinGet
 }
-
+ 
 if ($InstallPackages -or (Ask-Question -Title "Install Packages" -Message "Select and install packages?" -Default $true)) {
     # If user uses -All flag, choose some workloads.
     if ($All) {
@@ -850,15 +890,45 @@ if ($InstallPackages -or (Ask-Question -Title "Install Packages" -Message "Selec
     }
 }
 
-if (Is-RunningAsAdmin) {
-    if ($AutoLogin -or (Ask-Question -Title "Auto Login" -Message "Configure automatic login?" -Default $false)) {
-        if (Ask-Question -Title "Configure automatic login" -Message "Setup automatic login for the current user?" -Yes "This User" -No "Another User" -YesDescription "Log this user in automatically" -NoDescription "Log in a different user automatically" -CanAbort $false -Default $true -RequiresInput) {
-            $credential = Get-Credential -UserName $env:UserName -Message "Enter your windows account credentials"
-        } else {
-            $credential = Get-Credential -Message "Enter your windows account credentials"
-        }
-        Enable-AutomaticLogon -UserName $credential.UserName -Password $credential.Password
-    }
-} else {
-    Write-Host "Re-run using the Administrator prompt to configure automatic login."
+#if ($InstallFonts -or (Ask-Question -Title "Install fonts" -Message "Download and install $($Fonts.Length) fonts?" -Default $true)) {
+    #$tempFolderPath = [System.IO.Path]::GetTempPath()
+    #foreach($fontUrl in $Fonts) {
+        #Write-Information "Installing $fontUrl"
+        #$fontZipName = $fontUrl.Split("/")[-1]
+        #$fontFolderName = $fontZipName.Substring(0, $fontZipName.LastIndexOf('.'))
+        #$downloadPath = Join-Path -Path $tempFolderPath -ChildPath $fontZipName
+        #$unzippedPath = Join-Path -Path $tempFolderPath -ChildPath $fontFolderName 
+        #Invoke-WebRequest -Uri $fontUrl -OutFile $downloadPath
+        #if (Test-Path $unzippedPath -PathType Container) { 
+            #Remove-Item -Path $unzippedPath -Recurse -Force
+        #}
+        #Expand-Archive -Path $downloadPath -DestinationPath $unzippedPath
+        #$fontFiles = Get-ChildItem -Path $unzippedPath -Include *.ttf, *.otf, *.fon, *.fnt 
+        #foreach ($fontFile in $fontFiles) {
+            #Add-Font -File $fontFile
+        #} 
+        #Remove-Item -Path $downloadPath -Force
+        #Remove-Item -Path $unzippedPath -Force -Recurse
+    #}
+#}
+
+if (-not (Is-RunningAsAdmin)) {
+    Write-Host "Re-run in an administrator prompt to configure login and optional windows features."
+    Ask-ForRestart
+    exit 0
 }
+
+if ($AutoLogin -or (Ask-Question -Title "Auto Login" -Message "Configure automatic login?" -Default $false)) {
+    if (Ask-Question -Title "Configure automatic login" -Message "Setup automatic login for the current user?" -Yes "This User" -No "Another User" -YesDescription "Log this user in automatically" -NoDescription "Log in a different user automatically" -CanAbort $false -Default $true -RequiresInput) {
+        $credential = Get-Credential -UserName $env:UserName -Message "Enter your windows account credentials"
+    } else {
+        $credential = Get-Credential -Message "Enter your windows account credentials"
+    }
+    Enable-AutomaticLogon -UserName $credential.UserName -Password $credential.Password
+}
+
+if (Ask-Question -Title "Optional Windows Features" -Message "Select and enable Windows Features?" -Default $true) {
+    $selectedCollections = Write-Menu -Title 'Choose features' -MultiSelect -Entries $WindowsFeatures
+}
+
+Ask-ForRestart
