@@ -1,6 +1,7 @@
 param(
     [switch]$InstallWinget,
-    [switch]$InstallPackages
+    [switch]$InstallPackages,
+    [switch]$All
 )
 
 Add-Type -AssemblyName System.Windows.Forms
@@ -14,8 +15,16 @@ function Ask-Question {
         [string]$NoDescription = "Skip this stage",
         [string]$Yes = "Yes",
         [string]$No = "No", 
-        [bool]$CanAbort = $true
+        [bool]$CanAbort = $true,
+        [switch]$RequiresInput
     )
+
+    if ($All -and (-not $RequiresInput)) {
+        Write-Host "$Title"
+        Write-Host "$Message"
+        Write-Host (if ($Default) { $Yes } else { $No })
+        return $Default
+    }
 
     $choices = @(
         [System.Management.Automation.Host.ChoiceDescription]::new("&$Yes", "$YesDescription")
@@ -813,13 +822,26 @@ if ($isDotSourced) {
     exit 0
 }
 
-if ($InstallWinGet -or (Ask-Question -Title "Install WinGet" -Message "Install the latest WinGet package?" -Default $false)) {
+if ($InstallWinGet -or (Ask-Question -Title "Install WinGet" -Message "Install the latest WinGet package?" -Default $true)) {
     Write-Host "Installing WinGet"
     Install-WinGet
 }
 
 if ($InstallPackages -or (Ask-Question -Title "Install Packages" -Message "Select and install packages?" -Default $true)) {
-    $selectedCollections = Write-Menu -Title 'Choose workloads' -MultiSelect -Entries @($PackageCollections.Keys)
+    # If user uses -All flag, choose some workloads.
+    if ($All) {
+        $selectedCollections = @("General", "Microsoft Office", "Development", "Bitwarden", "SysInternals")
+        # Detect Nvidia card for Nvidia workload.
+        if (Get-WmiObject -Class Win32_PnPEntity | Where-Object { $_.Name -like "*NVIDIA*" }) {
+            $selectedCollections += "Nvidia"
+        }
+        Write-Host "Automatically selected the following workloads to install:"
+        foreach($coll in $selectedCollections) {
+            Write-Host " - $coll"
+        }
+    } else {
+        $selectedCollections = Write-Menu -Title 'Choose workloads' -MultiSelect -Entries @($PackageCollections.Keys)
+    }
     foreach($coll in $selectedCollections) {
         Write-Host "Installing workload: $coll"
         foreach($pkg in $PackageCollections[$coll]) {
@@ -830,7 +852,7 @@ if ($InstallPackages -or (Ask-Question -Title "Install Packages" -Message "Selec
 
 if (Is-RunningAsAdmin) {
     if ($AutoLogin -or (Ask-Question -Title "Auto Login" -Message "Configure automatic login?" -Default $false)) {
-        if (Ask-Question -Title "Configure automatic login" -Message "Setup automatic login for the current user?" -Yes "This User" -No "Another User" -YesDescription "Log this user in automatically" -NoDescription "Log in a different user automatically" -CanAbort $false) {
+        if (Ask-Question -Title "Configure automatic login" -Message "Setup automatic login for the current user?" -Yes "This User" -No "Another User" -YesDescription "Log this user in automatically" -NoDescription "Log in a different user automatically" -CanAbort $false -Default $true -RequiresInput) {
             $credential = Get-Credential -UserName $env:UserName -Message "Enter your windows account credentials"
         } else {
             $credential = Get-Credential -Message "Enter your windows account credentials"
