@@ -93,6 +93,7 @@ vim.keymap.set('n', 'tn', ':bnext<CR>')
 vim.keymap.set('n', 'tp', ':bprevious<CR>')
 vim.keymap.set('n', ';;', ':set list!<CR>', { silent = true })  -- Toggle whitespace highlighting
 vim.keymap.set('n', '<C-l>', ':noh<CR>:let @/ = ""<CR>', { nowait = true, silent = true }) -- Clear search
+vim.keymap.set('n', ',,', ':set nu!<CR>:set rnu!<CR>', { nowait = true, silent = true }) -- Toggle line numbers
 
 
 -- Start plugin manager
