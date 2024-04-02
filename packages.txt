@@ -16,3 +16,4 @@ cscope
 imagemagick
 pandoc
 ffmpeg
+texlive-latex-base
