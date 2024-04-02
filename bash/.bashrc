@@ -45,6 +45,7 @@ _trysource "$HOME/.fzf.bash"
 
 # extract.py script
 _pyalias 'extract' "$HOME/local/scripts/extract.py"
+_pyalias 'convert' "$HOME/local/scripts/convert.py"
 
 # Misc
 _optalias 'tmux' 'tm' '_tm'
