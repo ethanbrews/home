@@ -13,3 +13,6 @@ build-essential
 rsync
 man
 cscope
+imagemagick
+pandoc
+ffmpeg
