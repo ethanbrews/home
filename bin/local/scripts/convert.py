@@ -1,12 +1,16 @@
 import argparse
+from sys import argv
 from os import path
 from subprocess import run
+from shutil import which
+from typing import Tuple
 
 converters = {
     'pandoc': {
         'commandline': '{executable} {inFile} --output {outFile}',
         'inTypes': ['.creole', '.djot', '.xml', '.docbook', '.epub', '.fb2', '.hs', '.html,', '.htm', '.txt', '.xml', '.json', '.tex', '.md', '.1', '.2', '.3', '.markdown', '.odt', '.opml', '.docx', '.org', '.rst', '.textile', '.t2t', '.wiki'],
-        'outTypes': ['.js', '.epub', '.org', '.rst', '.1', '.markdown', '.xml', '.icml', '.pptx', '.adoc', '.html', '.txt', '.djot', '.docbook', '.hs', '.3', '.odt', '.rtf', '.tex', '.asciidoc', '.texi', '.textile', '.wiki', '.opml', '.pdf', '.json', '.2', '.htm', '.md', '.docx', '.fb2']
+        'outTypes': ['.js', '.epub', '.org', '.rst', '.1', '.markdown', '.xml', '.icml', '.pptx', '.adoc', '.html', '.txt', '.djot', '.docbook', '.hs', '.3', '.odt', '.rtf', '.tex', '.asciidoc', '.texi', '.textile', '.wiki', '.opml', '.pdf', '.json', '.2', '.htm', '.md', '.docx', '.fb2'],
+        'dependencies': ['pdflatex']
     },
     'ffmpeg': {
         'commandline': '{executable} -i {inFile} {outFile}',
@@ -32,7 +36,33 @@ def convert(in_file, out_file):
     command = converters[converter]['commandline'].format(executable=converter, inFile=in_file, outFile=out_file)
     return command
 
-if __name__ == '__main__':
+def _get_tool_info(executable) -> Tuple[bool, str]:
+    is_ok = which(executable) is not None
+    ok_text = 'Ok' if is_ok else 'Error'    
+    return is_ok, f'{executable} [{ok_text}]'
+
+def check_health():
+    total_src_types = 0
+    total_dst_types = 0
+    for converter in converters:
+        is_ok, text = _get_tool_info(converter)
+        if is_ok:
+            total_src_types += len(converters[converter]['inTypes'])
+            total_dst_types += len(converters[converter]['outTypes'])
+        print(text)
+        for dependency in converters[converter].get('dependencies', []):
+            _, dependency_text = _get_tool_info(dependency)
+            print((' '*4) + dependency_text)
+
+    print(f'Can convert from {total_src_types} to {total_dst_types} file types.')
+        
+
+def main():
+    # Check for --test without argparse to avoid conflicts with positional args
+    if '--test' in argv:
+        check_health()
+        return
+
     parser = argparse.ArgumentParser(
         prog='convert',
         description='Detect filetypes and convert documents using other tools',
@@ -41,6 +71,7 @@ if __name__ == '__main__':
     parser.add_argument('inFile', type=str)
     parser.add_argument('outFile', type=str)
     parser.add_argument('--preview', action='store_true')
+    parser.add_argument('--test', action='store_true') # This will never be used - just here for help text
     args = parser.parse_args()
     if args.inFile is None:
         raise ValueError('No inFile was provided')
@@ -50,3 +81,6 @@ if __name__ == '__main__':
     print(cmd)
     if not args.preview:
         run(cmd, shell=True)
+
+if __name__ == '__main__':
+    main()    
