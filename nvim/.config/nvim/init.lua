@@ -52,7 +52,8 @@ local plugins = {
           }
         }
       }
-    }
+    },
+    { "dhruvasagar/vim-table-mode" }
 }
 
 
@@ -214,3 +215,6 @@ telescope.setup {
   }
 }
 
+-- Configuration for vim-table-mode
+
+vim.keymap.set('n', 'mt', ':TableModeToggle<CR>')
