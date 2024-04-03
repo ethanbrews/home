@@ -51,6 +51,7 @@ _pyalias 'convert' "$HOME/local/scripts/convert.py"
 _optalias 'tmux' 'tm' '_tm'
 _optalias 'nvim' 'vim' 'nvim'
 _optalias 'bat' 'cat' 'bat --plain'
+_optalias 'realpath' 'cdr' '\cd $(realpath .)'
 
 # Zoxide
 if _can_exec zoxide; then
