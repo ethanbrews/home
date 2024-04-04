@@ -17,3 +17,4 @@ imagemagick
 pandoc
 ffmpeg
 texlive-latex-base
+net-tools
