@@ -148,13 +148,13 @@ require('lualine').setup {
         }
     },
     sections = {
-        lualine_a = {'mode'},
-        lualine_b = {'branch', 'diff', 'diagnostics'},
+        lualine_a = { 'mode' },
+        lualine_b = {  },
         lualine_c = {'filename'},
 
-        lualine_x = {  },
-        lualine_y = {'progress'},
-        lualine_z = {'location'}
+        lualine_x = { 'diagnostics', 'diff', 'branch', 'location', 'progress' },
+        lualine_y = { },
+        lualine_z = {  }
     }
 }
 
