@@ -90,6 +90,7 @@ vim.fn.matchadd('errorMsg', [[\s\+$]]) -- Highlight trailing whitespace as an er
 vim.opt.shortmess:append("S")
 vim.opt.foldmethod = 'syntax'
 vim.opt.foldlevel = 99
+vim.opt.wrapscan = false
 
 vim.keymap.set('n', 'tn', ':bnext<CR>')
 vim.keymap.set('n', 'tp', ':bprevious<CR>')
@@ -136,6 +137,21 @@ require("cscope_maps").setup()
 
 -- Setup (lualine)
 
+function llmodeformat(str)
+    local mappingTable = {
+        ["NORMAL"] = "N",
+        ["INSERT"] = "I",
+        ["COMMAND"] = "C",
+        ["V-BLOCK"] = "B",
+    }
+
+    if mappingTable[str] then
+        return mappingTable[str]
+    else
+        return str
+    end
+end
+
 require('lualine').setup {
     options = { 
         theme = 'onedark',
@@ -145,15 +161,17 @@ require('lualine').setup {
             statusline = 1000,
             tabline = 1000,
             winbar = 1000,
-        }
+        },
+        component_separators = { left = '|', right = '|' },
+        section_separators = { left = '', right = '' }
     },
     sections = {
-        lualine_a = { 'mode' },
+        lualine_a = { { 'mode', fmt = llmodeformat } },
         lualine_b = {  },
         lualine_c = {'filename'},
 
-        lualine_x = { 'diagnostics', 'diff', 'branch', 'location', 'progress' },
-        lualine_y = { },
+        lualine_x = { 'diagnostics', 'diff', 'branch', },
+        lualine_y = { 'progress', 'location' },
         lualine_z = {  }
     }
 }
