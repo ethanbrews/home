@@ -142,6 +142,7 @@ function llmodeformat(str)
         ["NORMAL"] = "N",
         ["INSERT"] = "I",
         ["COMMAND"] = "C",
+        ["VISUAL"] = "V",
         ["V-BLOCK"] = "B",
     }
 
