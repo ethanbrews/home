@@ -52,7 +52,9 @@ local plugins = {
           }
         }
       }
-    }
+    },
+    { "dhruvasagar/vim-table-mode" },
+    { "nvim-lualine/lualine.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } }
 }
 
 
@@ -88,11 +90,13 @@ vim.fn.matchadd('errorMsg', [[\s\+$]]) -- Highlight trailing whitespace as an er
 vim.opt.shortmess:append("S")
 vim.opt.foldmethod = 'syntax'
 vim.opt.foldlevel = 99
+vim.opt.wrapscan = false
 
 vim.keymap.set('n', 'tn', ':bnext<CR>')
 vim.keymap.set('n', 'tp', ':bprevious<CR>')
 vim.keymap.set('n', ';;', ':set list!<CR>', { silent = true })  -- Toggle whitespace highlighting
 vim.keymap.set('n', '<C-l>', ':noh<CR>:let @/ = ""<CR>', { nowait = true, silent = true }) -- Clear search
+vim.keymap.set('n', ',,', ':set nu!<CR>:set rnu!<CR>', { nowait = true, silent = true }) -- Toggle line numbers
 
 
 -- Start plugin manager
@@ -125,9 +129,53 @@ require("onedarkpro").setup({
 
 vim.cmd("colorscheme onedark")
 
+
 -- Keybindings (Cscope)
 
 require("cscope_maps").setup()
+
+
+-- Setup (lualine)
+
+function llmodeformat(str)
+    local mappingTable = {
+        ["NORMAL"] = "N",
+        ["INSERT"] = "I",
+        ["COMMAND"] = "C",
+        ["VISUAL"] = "V",
+        ["V-BLOCK"] = "B",
+    }
+
+    if mappingTable[str] then
+        return mappingTable[str]
+    else
+        return str
+    end
+end
+
+require('lualine').setup {
+    options = { 
+        theme = 'onedark',
+        icons_enabled = false,
+        always_divide_middle = true,
+        refresh = {
+            statusline = 1000,
+            tabline = 1000,
+            winbar = 1000,
+        },
+        component_separators = { left = '|', right = '|' },
+        section_separators = { left = '', right = '' }
+    },
+    sections = {
+        lualine_a = { { 'mode', fmt = llmodeformat } },
+        lualine_b = {  },
+        lualine_c = {'filename'},
+
+        lualine_x = { 'diagnostics', 'diff', 'branch', },
+        lualine_y = { 'progress', 'location' },
+        lualine_z = {  }
+    }
+}
 
 
 -- Keybindings (VimFugitive)
@@ -213,3 +261,6 @@ telescope.setup {
   }
 }
 
+-- Configuration for vim-table-mode
+
+vim.keymap.set('n', 'mt', ':TableModeToggle<CR>')

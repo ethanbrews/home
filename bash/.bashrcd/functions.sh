@@ -92,7 +92,7 @@ function _zl {
             eval "\cd '$DIRNAME'"
             EXIT=$?	
 		else
-			eval "z $@"
+			eval "\cd $@"
 			EXIT=$?
 		fi
 	else

@@ -13,3 +13,8 @@ build-essential
 rsync
 man
 cscope
+imagemagick
+pandoc
+ffmpeg
+texlive-latex-base
+net-tools
