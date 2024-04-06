@@ -814,7 +814,8 @@ $PackageCollections = @{
         "jqlang.jq",
         "SSHFS-Win.SSHFS-Win",
         "REALiX.HWiNFO",
-        "Rufus.Rufus"
+        "Rufus.Rufus",
+        "rjpcomputing.luaforwindows"
     )
     "Games" = @(
         "Microsoft.OpenJDK.21",
