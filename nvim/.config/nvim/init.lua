@@ -1,3 +1,6 @@
+-- Disable neorg here...
+
+local neorg_enabled = true 
 
 -- Plugin Manager Setup
 
@@ -14,9 +17,6 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-
-
-
 local plugins = {
 	{ "smoka7/hop.nvim" },
 	{ "nvim-telescope/telescope.nvim", dependencies = { 'nvim-lua/plenary.nvim' } },
@@ -25,38 +25,33 @@ local plugins = {
 	{ "scrooloose/nerdcommenter" },
 	{ "nvim-treesitter/nvim-treesitter" },
 	{ "preservim/nerdtree" },
-    {
-          "olimorris/onedarkpro.nvim",
-          priority = 1000, -- Ensure it loads first
-    },
+    { "olimorris/onedarkpro.nvim" },
     {
       "dhananjaylatkar/cscope_maps.nvim",
       dependencies = {
-        "folke/which-key.nvim", -- optional [for whichkey hints]
-        "nvim-telescope/telescope.nvim", -- optional [for picker="telescope"]
-        "ibhagwan/fzf-lua", -- optional [for picker="fzf-lua"]
-        "nvim-tree/nvim-web-devicons", -- optional [for devicons in telescope or fzf]
-      },
-      opts = {
-        disable_maps = false, 
-        skip_input_prompt = false,
-        prefix = "<leader>c", -- prefix to trigger maps
-
-        cscope = {
-          exec = "cscope",
-          picker = "telescope",
-          skip_picker_for_single_result = true,
-          project_rooter = {
-            enable = false,
-            change_cwd = false
-          }
-        }
+        "folke/which-key.nvim", 
+        "nvim-telescope/telescope.nvim", 
+        "nvim-tree/nvim-web-devicons",
       }
     },
     { "dhruvasagar/vim-table-mode" },
-    { "nvim-lualine/lualine.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } }
+    { "nvim-lualine/lualine.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } }   
 }
 
+if (neorg_enabled) then
+    table.insert(plugins, {
+        "vhyrro/luarocks.nvim",
+        priority = 1000,
+        config = true
+    })
+    table.insert(plugins, {
+        "nvim-neorg/neorg",
+        dependencies = { "luarocks.nvim" },
+        lazy = false,
+        version = "*",
+        config = true,
+    })
+end
 
 -- Basic Settings
 
@@ -103,7 +98,7 @@ vim.keymap.set('n', ',,', ':set nu!<CR>:set rnu!<CR>', { nowait = true, silent =
 require("lazy").setup(plugins)
 
 
--- Treesitter Enable
+-- Treesitter
 
 require'nvim-treesitter.configs'.setup {
   highlight = {
@@ -130,12 +125,28 @@ require("onedarkpro").setup({
 vim.cmd("colorscheme onedark")
 
 
--- Keybindings (Cscope)
+-- Cscope
 
-require("cscope_maps").setup()
+require("cscope_maps").setup {
+    opts = {
+        disable_maps = false, 
+        skip_input_prompt = false,
+        prefix = "<leader>c", -- prefix to trigger maps
+
+        cscope = {
+            exec = "cscope",
+            picker = "telescope",
+            skip_picker_for_single_result = true,
+            project_rooter = {
+                enable = false,
+                change_cwd = false
+            }
+        }
+    }
+}
 
 
--- Setup (lualine)
+-- LuaLine
 
 function llmodeformat(str)
     local mappingTable = {
@@ -171,19 +182,19 @@ require('lualine').setup {
         lualine_b = {  },
         lualine_c = {'filename'},
 
-        lualine_x = { 'diagnostics', 'diff', 'branch', },
-        lualine_y = { 'progress', 'location' },
+        lualine_x = { 'progress', 'location' },
+        lualine_y = { --[['diagnostics', 'diff', 'branch',--]] },
         lualine_z = {  }
     }
 }
 
 
--- Keybindings (VimFugitive)
+-- VimFugitive
 
 vim.keymap.set('n', 'gb', ':Git blame<CR>')
 
 
--- Keybindings (Hop)
+-- Hop
 
 local hop = require('hop')
 hop.setup()
@@ -202,7 +213,7 @@ vim.keymap.set('', '<Leader>w', function()
 end, { remap = true })
 
 
--- Keybindings (Harpoon)
+-- Harpoon
 
 local harpoon = require('harpoon')
 harpoon.setup({
@@ -235,7 +246,7 @@ vim.keymap.set('n', 'tr', function()
 end, { silent = true })
 
 
--- Keybindings (Telescope)
+-- Telescope
 
 local telescope = require('telescope')
 local ts_builtin = require('telescope.builtin')
@@ -261,6 +272,23 @@ telescope.setup {
   }
 }
 
--- Configuration for vim-table-mode
+-- vim-table-mode
 
 vim.keymap.set('n', 'mt', ':TableModeToggle<CR>')
+
+-- Neorg
+
+require('neorg').setup {
+    load = {
+        ['core.defaults'] = {},
+        ['core.concealer'] = {},
+        ['core.dirman'] = {
+            config = {
+                workspaces = {
+                    notes = '~/notes',
+                },
+                default_workspace = 'notes'
+            }
+        }
+    }
+}
