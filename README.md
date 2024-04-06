@@ -1,6 +1,6 @@
 # Home
 
-My configuration files for bash, vim, windows terminal and other command line tools.
+My configuration files for Windows 11 and Linux (Debian).
 
 ## Installation
 
