@@ -19,7 +19,7 @@ local config = function()
 
 	-- Makes sorting a lot faster than the built-in one
 	-- and enables fzf syntax
-	require("telescope").load_extension("fzf")
+	-- require("telescope").load_extension("fzf")
 end
 
 return {
