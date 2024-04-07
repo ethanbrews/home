@@ -18,3 +18,5 @@ pandoc
 ffmpeg
 texlive-latex-base
 net-tools
+lua5.1
+liblua5.1-dev
