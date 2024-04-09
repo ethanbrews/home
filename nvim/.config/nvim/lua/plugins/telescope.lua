@@ -38,5 +38,6 @@ return {
 		keys = require("config.keymaps").telescope,
 		cmd = "Telescope",
 		event = { "BufReadPre", "BufNewFile" },
+        priority = 1,
 	},
 }

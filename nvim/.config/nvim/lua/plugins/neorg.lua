@@ -14,7 +14,8 @@ config = function()
                     },
                     default_workspace = 'notes'
                 }
-        	}
+        	},
+            ['core.export'] = {}
         }
     }
 end
