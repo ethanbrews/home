@@ -1,7 +1,7 @@
 local opts = {
     disable_maps = false,
     skip_input_prompt = true,
-    prefix = "<Leader>c",
+    prefix = require('config.keymaps').cscope_leader,
     cscope = {
         exec = "cscope",
         picker = "telescope",
