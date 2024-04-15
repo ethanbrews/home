@@ -1,7 +1,11 @@
 local opts = {
+    options = {
+        transparency = true,
+        cursorline = true,
+    },
     highlights = {
-        CursorLine = { bg = "#353a45" },
-        CursorLineNR = { fg = "#dcc7a0" },
+        CursorLine = { bg = "#2a2e36" },
+        CursorLineNR = { fg = "#dcc7a0", bg = "#2a2e36" },
         HopNextKey = { fg = "#67b0ff", bg = "#414858" },
         HopNextKey1 = { fg = "#ffdd88", bg = "#414858" },
         HopNextKey2 = { fg = "#ccb06c", bg = "#414858" },
