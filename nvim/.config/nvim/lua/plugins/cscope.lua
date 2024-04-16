@@ -1,20 +1,20 @@
-local config = function()
-    require("cscope_maps").setup {
-        opts = {
-            disable_maps = false,
-            skip_input_prompt = false,
-            prefix = "<Leader>c",
-            cscope = {
-                exec = "cscope",
-                picker = "telescope",
-                skip_picker_for_single_result = true,
-                project_rooter = {
-                    enable = false,
-                    change_cwd = false
-                }
-            }
+local opts = {
+    disable_maps = false,
+    skip_input_prompt = true,
+    prefix = require('config.keymaps').cscope_leader,
+    cscope = {
+        exec = "cscope",
+        picker = "telescope",
+        skip_picker_for_single_result = true,
+        project_rooter = {
+            enable = false,
+            change_cwd = false
         }
     }
+}
+
+local config = function()
+    require("cscope_maps").setup(opts)
 end
 
 return {
@@ -24,5 +24,6 @@ return {
         "nvim-telescope/telescope.nvim",
         "nvim-tree/nvim-web-devicons",
     },
-    config = config
+    config = config,
+    opts = opts,
 }

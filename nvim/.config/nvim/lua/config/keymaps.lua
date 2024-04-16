@@ -86,6 +86,8 @@ M.telescope = function()
     }
 end
 
+M.cscope_leader = "cc"
+
 M.harpoon = function() 
 
     return {

@@ -2,7 +2,22 @@ if (not vim.g.neorg_plugin) then
     return { }
 end
 
-config = function()
+NeorgToggleConcealer = function()
+    if vim.opt.conceallevel:get() == 0 then
+        vim.opt.conceallevel = 2
+    else
+        vim.opt.conceallevel = 0
+    end
+    if vim.bo.filetype == 'norg' then
+        vim.cmd 'Neorg toggle-concealer'
+    end
+end
+
+SetConcealLevel = function(value)
+    vim.opt.conceallevel = value
+end
+
+local config = function()
     require('neorg').setup {
         load = {
             ['core.defaults'] = {},
@@ -14,9 +29,18 @@ config = function()
                     },
                     default_workspace = 'notes'
                 }
-        	}
+        	},
+            ['core.export'] = {}
         }
     }
+
+    vim.cmd [[
+        command! -nargs=* Notes Neorg workspace notes
+        command! -nargs=* Re Neorg return
+        command! -nargs=0 Conceal lua NeorgToggleConcealer()
+        autocmd FileType norg lua SetConcealLevel(2)
+        autocmd BufLeave *.norg lua SetConcealLevel(0)
+    ]]
 end
 
 return {
