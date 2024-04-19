@@ -47,9 +47,15 @@ function Search-Recursive {
 	Get-ChildItem -Recurse | Select-String -AllMatches -Pattern $args
 }
 
-$PSStyle.FileInfo.Directory = "`e[34;1m"
+function Create-EmptyFile($file) {
+    "" | Out-File $file -Encoding ASCII
+}
+
+$PSStyle.FileInfo.Directory = $PSStyle.Foreground.Blue
 
 New-Alias -Name jq -Value jq-win64
 New-Alias -Name ln -Value Make-Link
 New-Alias -Name vim -Value "nvim"
 New-Alias -Name which -Value Show-Executable
+New-Alias -Name touch -Value Create-EmptyFile
+New-Alias -Name .. -Value "cd .."
