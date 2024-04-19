@@ -4,3 +4,4 @@ $env:PSModulePath += ";$homePath"
 Import-Module Prompt
 Import-Module Functions
 Import-Module Styles
+Import-Module Admin
