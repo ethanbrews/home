@@ -840,12 +840,12 @@ $PackageCollections = @{
 
 $WindowsFeatures = @{
     "Hyper-V" = "Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-All -NoRestart"
-    "Microsoft Print to PDF" = "Enable-WindowsOptionalFeature -Online -FeatureName PrintToPDFServices -NoRestart"
+    "Print to PDF" = "Enable-WindowsOptionalFeature -Online -FeatureName Printing-PrintToPDFServices-Features -NoRestart"
     "Telnet Client" = "Enable-WindowsOptionalFeature -Online -FeatureName TelnetClient -NoRestart"
     "Virtual Machine Platform" = "Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform -NoRestart"
     "Windows Hypervisor Platform" = "Enable-WindowsOptionalFeature -Online -FeatureName HypervisorPlatform -NoRestart"
     "Windows Sandbox" = "Enable-WindowsOptionalFeature -Online -FeatureName Containers-DisposableClientVM -NoRestart"
-    "Windows Subsystem for Linux" = "Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux -NoRestart"
+    "WSL" = "Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux -NoRestart"
  }
 
 $Fonts = @(
