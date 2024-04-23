@@ -28,7 +28,32 @@ function New-EmptyFile {
 
 function Get-ProcessForPort {
     param([Parameter(Mandatory, Position=0)][string]$Port)
-	Get-Process -Id (Get-NetTCPConnection -LocalPort $Port).OwningProcess
+    Get-Process -Id (Get-NetTCPConnection -LocalPort $Port).OwningProcess
+}
+
+function Get-CurrentlyAtRootDirectory {
+    return (((Get-Location).Path) -match '^[a-zA-Z]:\\$')
+}
+
+function Move-UpDirectory {
+    param(
+        [Parameter(Position=0)]
+        [ValidateRange(1, [int]::MaxValue)]
+        [int]$Depth = 1
+    )
+    for ($i = 0; $i -lt $Depth; $i++) {
+        if (Get-CurrentlyAtRootDirectory) {
+            break
+        }
+        Set-Location '..'
+    }
+    if ($Depth -gt 1) {
+        Get-Location | Format-Wide "Path"
+    }
+}
+
+function Update-Profile {
+    & $profile
 }
 
 New-Alias -Name touch -Value New-EmptyFile
@@ -38,3 +63,6 @@ New-Alias -Name vim -Value "nvim"
 New-Alias -Name gvim -Value "nvim-qt"
 New-Alias -Name which -Value Show-Executable
 New-Alias -Name unzip -Value Expand-Archive
+New-Alias -Name '..' -Value Move-UpDirectory
+
+Export-ModuleMember -Function New-Link, Show-Drives, Show-Executable, Search-Recursive, New-EmptyFile, Get-ProcessForPort, Move-UpDirectory -Alias touch, jq, ln, vim, gvim, which, unzip, ..
