@@ -56,6 +56,10 @@ function Update-Profile {
     & $profile
 }
 
+function Update-AllWinGetPackages {
+    Get-WinGetPackage | Where-Object -Property IsUpdateAvailable -eq $true | ForEach-Object { Update-WinGetPackage -Id $_.ID }
+}
+
 New-Alias -Name touch -Value New-EmptyFile
 New-Alias -Name jq -Value jq-win64
 New-Alias -Name ln -Value New-Link
@@ -86,4 +90,4 @@ Export-ModuleMember -Alias touch,
                            wgi,
                            wgs,
                            wgu,
-                           '..'
+                           '.. '
