@@ -63,6 +63,26 @@ New-Alias -Name vim -Value "nvim"
 New-Alias -Name gvim -Value "nvim-qt"
 New-Alias -Name which -Value Show-Executable
 New-Alias -Name unzip -Value Expand-Archive
+New-Alias -Name wgi -Value Get-WinGetPackage
+New-Alias -Name wgs -Value Find-WinGetPackage
+New-Alias -Name wgu -Value Update-WinGetPackage
 New-Alias -Name '..' -Value Move-UpDirectory
 
-Export-ModuleMember -Function New-Link, Show-Drives, Show-Executable, Search-Recursive, New-EmptyFile, Get-ProcessForPort, Move-UpDirectory -Alias touch, jq, ln, vim, gvim, which, unzip, ..
+Export-ModuleMember -Function New-Link,
+                              Show-Drives, 
+                              Show-Executable, 
+                              Search-Recursive, 
+                              New-EmptyFile, 
+                              Get-ProcessForPort, 
+                              Move-UpDirectory 
+                    -Alias    touch, 
+                              jq, 
+                              ln, 
+                              vim, 
+                              gvim, 
+                              which, 
+                              unzip,
+                              wgi,
+                              wgs,
+                              wgu,
+                              '..'

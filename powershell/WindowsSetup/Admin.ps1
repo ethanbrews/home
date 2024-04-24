@@ -1,9 +1,24 @@
-function Test-Administrator  {  
-	$user = [Security.Principal.WindowsIdentity]::GetCurrent();
-	(New-Object Security.Principal.WindowsPrincipal $user).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)  
+function Is-RunningAsAdmin {
+    $currentUser = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+    return $currentUser.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 }
 
-function Invoke-AsAdmin {
+function Restart-ScriptAsAdmin {
+    param(
+        [Parameter(Mandatory)][System.Management.Automation.InvocationInfo]$Invocation,
+        [switch]$NoExit
+    )
+    if (Is-RunningAsAdmin) { return }
+    $CmdLine = "cd $PWD; & `"" + $Invocation.MyCommand.Path + "`" " + $Invocation.UnboundArguments
+    if (-not $NoExit) {
+        $CmdLine += "; exit"
+    }
+    Write-Information "Running '$CmdLine' in elevated prompt."
+    Start-Process powershell.exe -verb runAs -ArgumentList '-NoExit', '-Command', "$CmdLine"
+    Exit
+}
+
+function Run-AsAdmin {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory, position=0)]
@@ -29,5 +44,3 @@ function Invoke-AsAdmin {
         Write-Error "Failed to start an elevated PowerShell process."
     }
 }
-
-Export-ModuleMember -Function Test-Administrator, Invoke-AsAdmin
