@@ -2,7 +2,7 @@
 
 My configuration files for Windows 11 and Linux (Debian).
 
-## Installation
+## Linux Installation
 
 Clone this repo:
 ```bash
@@ -34,21 +34,21 @@ Finally, source the .bashrc file
 source ~/.bashrc
 ```
 
-## Dependencies
+### Dependencies
 
-### Fuzzy Finder
+#### Fuzzy Finder
 
 ```bash
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
 ```
-### Rust + Cargo
+#### Rust + Cargo
 
 ```bash
 curl https://sh.rustup.rs -sSf | sh
 ```
 
-### Neovim
+#### Neovim
 
 ```bash
 sudo apt-get install ninja-build gettext cmake unzip curl
@@ -68,12 +68,12 @@ There is sometimes an issue where treesitter errors are shown on help pages. To 
 :TSInstall vimdoc
 ```
 
-### Cargo Packages
+#### Cargo Packages
 ```bash
 cat cargo-packages.txt | xargs cargo install -y
 ```
 
-### Python:
+#### Python:
 - [Python](https://devguide.python.org/getting-started/setup-building/)
 
 # Windows
@@ -84,5 +84,7 @@ Setup and install apps with:
 ```powershell
 iex "& { $(iwr 'https://raw.githubusercontent.com/ethanbrews/home/main/Windows-Setup.ps1') }"
 ```
+
+Clone the repo and add `Import-Module "<repo>\Profile\Profile.psm1"` to your $profile.
 
 [NerdFonts](https://github.com/ryanoasis/nerd-fonts) - I just use the [JetBrains Mono](https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/JetBrainsMono.zip) font.
