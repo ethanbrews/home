@@ -12,7 +12,7 @@ cd dotfiles
 
 Setup local directories to avoid stow starting to track unwanted files in git later on:
 ```bash
-mkdir -p ~/local/usr/{bin,share} ~/local/{lib,scripts} ~/.config
+mkdir -p ~/.local/usr/{bin,share} ~/.local/{lib,scripts} ~/.config
 ```
 
 Install apt packages:

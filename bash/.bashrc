@@ -1,3 +1,5 @@
+LOCAL="$HOME/.local"
+
 # Unalias to prevent self-referencing (causes zoxide crash)
 unalias cd ls 2> /dev/null
 
@@ -18,9 +20,9 @@ fi
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 
 # Add ./local folders to $PATH
-export MANPATH="$HOME/local/usr/share/man:$MANPATH"
-export PATH="$HOME/local/usr/bin:$PATH"
-export PYTHONPATH="$HOME/local/scripts:$PYTHONPATH"
+export MANPATH="$LOCAL/usr/share/man:$MANPATH"
+export PATH="$LOCAL/usr/bin:$PATH"
+export PYTHONPATH="$LOCAL/scripts:$PYTHONPATH"
 
 # System
 alias ..='_go_back'
@@ -44,8 +46,8 @@ fi
 _trysource "$HOME/.fzf.bash"
 
 # extract.py script
-_pyalias 'extract' "$HOME/local/scripts/extract.py"
-_pyalias 'convert' "$HOME/local/scripts/convert.py"
+_pyalias 'extract' "$LOCAL/scripts/extract.py"
+_pyalias 'convert' "$LOCAL/scripts/convert.py"
 
 # Misc
 _optalias 'tmux' 'tm' '_tm'
