@@ -55,7 +55,7 @@ sudo apt-get install ninja-build gettext cmake unzip curl
 git clone https://github.com/neovim/neovim
 cd neovim
 git checkout stable
-make CMAKE_BUILD_TYPE=RelWithDebInfo
+make CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_INSTALL_PREFIX="$HOME/.local"
 PREFIX=$HOME/local make install
 ```
 
