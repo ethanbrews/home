@@ -29,3 +29,4 @@ vim.opt.shortmess:append("S")
 vim.opt.foldmethod = 'syntax'
 vim.opt.foldlevel = 99
 vim.opt.wrapscan = false
+vim.opt.colorcolumn = { 81, 97 }
