@@ -59,12 +59,12 @@ _optalias 'realpath' 'cdr' '\cd $(realpath .)'
 if _can_exec zoxide; then
     eval "$(zoxide init bash)"
     alias cd='_zl'
-else 
+else
     alias cd='_cl'
 fi
 
 # Finally, source the non version controlled local.sh
 _trysource "$HOME/.bashrcd/local.sh"
 
-export LC_ALL=en_US.UTF-8  
+export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
