@@ -26,6 +26,9 @@ vim.opt.termguicolors = true
 vim.opt.cursorline = true
 vim.fn.matchadd('errorMsg', [[\s\+$]]) -- Highlight trailing whitespace as an error
 vim.opt.shortmess:append("S")
-vim.opt.foldmethod = 'syntax'
+vim.opt.foldmethod = 'expr'
+vim.opt.foldexpr='nvim_treesitter#foldexpr()'
+vim.opt.foldenable = false
 vim.opt.foldlevel = 99
 vim.opt.wrapscan = false
+-- vim.opt.colorcolumn = { 81, 97 }
