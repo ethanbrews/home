@@ -13,7 +13,7 @@ if [ -d "$HOME/.cargo/bin" ]; then
 fi
 export TERM=xterm-256color
 if _can_exec nvim; then
-    export EDITOR=nvim
+    export EDITOR="nvim --clean"
 else
     export EDITOR=vim
 fi
