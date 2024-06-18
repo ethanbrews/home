@@ -78,7 +78,8 @@ Export-ModuleMember -Function New-Link,
                               Search-Recursive, 
                               New-EmptyFile, 
                               Get-ProcessForPort, 
-                              Move-UpDirectory 
+                              Move-UpDirectory,
+                              Update-AllWinGetPackages
 
 Export-ModuleMember -Alias touch, 
                            jq, 
