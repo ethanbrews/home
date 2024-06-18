@@ -18,7 +18,7 @@ function _optalias() {
 function _pyalias() {
     local alias=${1}
     local script=${2}
-    
+
     if _can_exec python3 $$ [ -f $script ]; then
         alias $alias="python3 '$script'"
     fi

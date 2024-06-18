@@ -1,24 +1,24 @@
 function New-Link {
-	param(
-		[string]$Source,
-		[string]$Destination
-	)
+    param(
+        [string]$Source,
+        [string]$Destination
+    )
     New-Item -Path $Destination -ItemType SymbolicLink -Value $Source
 }
 
 function Show-Drives { Get-PSDrive -PSProvider 'FileSystem' | Format-Wide -Property Root }
 
 function Show-Executable {
-	if (Get-Alias -Name $args -ErrorAction SilentlyContinue) {
-		Get-Alias -Name $args | Format-Wide -Property DisplayName -Auto
-	} elseif (Get-Command $args -ErrorAction SilentlyContinue) {
-		Get-Command $args | Format-Wide -Property Source -Auto
-	} else {
-		Write-Error -Message "Error: $args is not a command or alias" -Category InvalidArgument
-	}
+    if (Get-Alias -Name $args -ErrorAction SilentlyContinue) {
+        Get-Alias -Name $args | Format-Wide -Property DisplayName -Auto
+    } elseif (Get-Command $args -ErrorAction SilentlyContinue) {
+        Get-Command $args | Format-Wide -Property Source -Auto
+    } else {
+        Write-Error -Message "Error: $args is not a command or alias" -Category InvalidArgument
+    }
 }
 function Search-Recursive {
-	Get-ChildItem -Recurse | Select-String -AllMatches -Pattern $args
+    Get-ChildItem -Recurse | Select-String -AllMatches -Pattern $args
 }
 
 function New-EmptyFile {
@@ -57,7 +57,16 @@ function Update-Profile {
 }
 
 function Update-AllWinGetPackages {
-    Get-WinGetPackage | Where-Object -Property IsUpdateAvailable -eq $true | ForEach-Object { Update-WinGetPackage -Id $_.ID }
+    $pkgs = Get-WinGetPackage | Where-Object -Property IsUpdateAvailable -eq $true
+    Write-Host "$($pkgs.Count) packages available to upgrade."
+    $pkgs | ForEach-Object { Update-WinGetPackage -Id $_.ID }
+}
+
+function Install-WinGetPackageInteractive {
+    param(
+        [Parameter(Mandatory, Position=0)][string]$Query
+    )
+    echo "Not implemented"
 }
 
 New-Alias -Name touch -Value New-EmptyFile
@@ -67,26 +76,26 @@ New-Alias -Name vim -Value "nvim"
 New-Alias -Name gvim -Value "nvim-qt"
 New-Alias -Name which -Value Show-Executable
 New-Alias -Name unzip -Value Expand-Archive
-New-Alias -Name wgi -Value Get-WinGetPackage
+New-Alias -Name wgi -Value Install-WinGetPackage
 New-Alias -Name wgs -Value Find-WinGetPackage
 New-Alias -Name wgu -Value Update-WinGetPackage
 New-Alias -Name '..' -Value Move-UpDirectory
 
 Export-ModuleMember -Function New-Link,
-                              Show-Drives, 
-                              Show-Executable, 
-                              Search-Recursive, 
-                              New-EmptyFile, 
-                              Get-ProcessForPort, 
+                              Show-Drives,
+                              Show-Executable,
+                              Search-Recursive,
+                              New-EmptyFile,
+                              Get-ProcessForPort,
                               Move-UpDirectory,
                               Update-AllWinGetPackages
 
-Export-ModuleMember -Alias touch, 
-                           jq, 
-                           ln, 
-                           vim, 
-                           gvim, 
-                           which, 
+Export-ModuleMember -Alias touch,
+                           jq,
+                           ln,
+                           vim,
+                           gvim,
+                           which,
                            unzip,
                            wgi,
                            wgs,
