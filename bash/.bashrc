@@ -55,13 +55,7 @@ _optalias 'nvim' 'vim' 'nvim'
 _optalias 'bat' 'cat' 'bat --plain'
 _optalias 'realpath' 'cdr' '\cd $(realpath .)'
 
-# Zoxide
-if _can_exec zoxide; then
-    eval "$(zoxide init bash)"
-    alias cd='_zl'
-else
-    alias cd='_cl'
-fi
+alias cd='_cl'
 
 # Finally, source the non version controlled local.sh
 _trysource "$HOME/.bashrcd/local.sh"
