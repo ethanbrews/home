@@ -205,7 +205,7 @@ function _open_zellij() {
         if [ "$N_SESSIONS" -eq 0 ]; then
             zellij -s "main"
         elif [ "$N_SESSIONS" -eq 1 ]; then
-            zellij attach
+            zellij attach $(zellij list-sessions | sed 's/ .*$//')
         else
             zellij attach $(zellij list-sessions | sed -e 's/\x1b\[[0-9;]*m//g' -e 's/ - attach to resurrect//' | fzf | sed 's/ .*$//')
         fi
