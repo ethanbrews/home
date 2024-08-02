@@ -172,6 +172,19 @@ norepeat() {
   ';
 }
 
+function show_color_table {
+    for x in {0..8}; do
+        for i in {30..37}; do
+            for a in {40..47}; do
+                echo -ne "\e[$x;$i;$a""m\\\e[$x;$i;$a""m\e[0;37;40m "
+            done
+            echo
+        done
+    done
+    echo ""
+}
+alias show_colour_table=show_color_table
+
 function _tm() {
     if [ "$#" -eq 0 ]; then
         N_SESSIONS=$(tmux list-sessions | wc -l)
@@ -186,3 +199,19 @@ function _tm() {
         tmux attach-session -t $1
     fi
 }
+
+function _open_zellij() {
+    if [ "$#" -eq 0 ]; then
+        N_SESSIONS=$(zellij list-sessions | wc -l)
+        if [ "$N_SESSIONS" -eq 0 ]; then
+            zellij -s "main"
+        elif [ "$N_SESSIONS" -eq 1 ]; then
+            zellij attach $(zellij list-sessions | sed 's/ .*$//')
+        else
+            zellij attach $(zellij list-sessions | sed -e 's/\x1b\[[0-9;]*m//g' -e 's/ - attach to resurrect//' | fzf | sed 's/ .*$//')
+        fi
+    else
+        zellij attach $1
+    fi
+}
+

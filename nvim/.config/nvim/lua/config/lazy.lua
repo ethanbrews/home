@@ -12,4 +12,9 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- Load plugin specs from lua/plugins/*.lua
-require("lazy").setup("plugins", {  })
+require("lazy").setup({
+	spec = {
+        --{ import = 'lazyvim.plugins.extras.lang.python' },
+		{ import = 'plugins' }
+	}
+})
