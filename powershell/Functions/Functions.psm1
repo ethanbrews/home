@@ -66,7 +66,11 @@ function Install-WinGetPackageInteractive {
     param(
         [Parameter(Mandatory, Position=0)][string]$Query
     )
-    echo "Not implemented"
+    $pkgs = Find-WinGetPackage -Query $Query
+    $result = Write-Menu -Title 'Packages' -Entries ($pkgs).ID -Sort
+    if ($null -ne $result) {
+        $pkgs | Where-Object -Property ID -eq $result | ForEach-Object { Install-WinGetPackage -Id $_.ID }
+    }
 }
 
 New-Alias -Name touch -Value New-EmptyFile
@@ -80,6 +84,7 @@ New-Alias -Name wgi -Value Install-WinGetPackage
 New-Alias -Name wgs -Value Find-WinGetPackage
 New-Alias -Name wgu -Value Update-WinGetPackage
 New-Alias -Name '..' -Value Move-UpDirectory
+New-Alias -Name wgg -Value Install-WinGetPackageInteractive
 
 Export-ModuleMember -Function New-Link,
                               Show-Drives,
@@ -88,7 +93,8 @@ Export-ModuleMember -Function New-Link,
                               New-EmptyFile,
                               Get-ProcessForPort,
                               Move-UpDirectory,
-                              Update-AllWinGetPackages
+                              Update-AllWinGetPackages,
+                              Install-WinGetPackageInteractive
 
 Export-ModuleMember -Alias touch,
                            jq,
@@ -100,4 +106,5 @@ Export-ModuleMember -Alias touch,
                            wgi,
                            wgs,
                            wgu,
-                           '.. '
+                           '..',
+                           wgg
