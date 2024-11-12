@@ -2,9 +2,10 @@ local M = {}
 
 M.init = function()
     local map = vim.keymap.set
-    
+
     map('n', 'tn', ':bnext<CR>')
     map('n', 'tp', ':bprevious<CR>')
+    map('n', 'tc', ':enew<CR>')
     map('n', ';;', ':set list!<CR>', { silent = true })  -- Toggle whitespace highlighting
     map('n', '<C-l>', ':noh<CR>:let @/ = ""<CR>', { nowait = true, silent = true }) -- Clear search
     map('n', ',,', ':set nu!<CR>:set rnu!<CR>', { nowait = true, silent = true }) -- Toggle line numbers
@@ -40,55 +41,55 @@ M.telescope = function()
 
     return {
         {
-            'tl', 
-            builtin.buffers 
+            'tl',
+            builtin.buffers
         },
         {
-            'tf', 
-             builtin.find_files 
+            'tf',
+             builtin.find_files
         },
         {
-            'tq', 
-            builtin.help_tags 
+            'tq',
+            builtin.help_tags
         },
         {
-            'tg', 
-            builtin.live_grep 
+            'tg',
+            builtin.live_grep
         },
         {
-            'th', 
-            builtin.oldfiles 
+            'th',
+            builtin.oldfiles
         },
         {
-            't;', 
-            builtin.command_history 
+            't;',
+            builtin.command_history
         },
         {
-            'tt', 
-            builtin.tags 
+            'tt',
+            builtin.tags
         },
         {
-            'tm', 
-            builtin.marks 
+            'tm',
+            builtin.marks
         },
         {
-            'tq', 
-            builtin.registers 
+            'tq',
+            builtin.registers
         },
         {
-            't/', 
-            builtin.man_pages 
+            't/',
+            builtin.man_pages
         },
         {
             'tr',
-            telescope.extensions.harpoon.marks 
+            telescope.extensions.harpoon.marks
         },
     }
 end
 
 M.cscope_leader = "cc"
 
-M.harpoon = function() 
+M.harpoon = function()
 
     return {
 
