@@ -57,9 +57,16 @@ function Update-Profile {
 }
 
 function Update-AllWinGetPackages {
+    param(
+        [Parameter()][switch]$WhatIf
+    )
     $pkgs = Get-WinGetPackage | Where-Object -Property IsUpdateAvailable -eq $true
     Write-Host "$($pkgs.Count) packages available to upgrade."
-    $pkgs | ForEach-Object { Update-WinGetPackage -Id $_.ID }
+    if ($WhatIf) {
+        $pkgs | Format-Table
+    } else {
+        $pkgs | ForEach-Object { Update-WinGetPackage -Id $_.ID }
+    }
 }
 
 function Install-WinGetPackageInteractive {
@@ -70,6 +77,17 @@ function Install-WinGetPackageInteractive {
     $result = Write-Menu -Title 'Packages' -Entries ($pkgs).ID -Sort
     if ($null -ne $result) {
         $pkgs | Where-Object -Property ID -eq $result | ForEach-Object { Install-WinGetPackage -Id $_.ID }
+    }
+}
+
+function Import-Env {
+    param(
+        [Parameter(Position=0)][string]$File = ".env"
+    )
+
+    Get-Content $File | foreach {
+        $name, $value = $_.split('=')
+        Set-Content env:\$name $value
     }
 }
 
@@ -85,6 +103,7 @@ New-Alias -Name wgs -Value Find-WinGetPackage
 New-Alias -Name wgu -Value Update-WinGetPackage
 New-Alias -Name '..' -Value Move-UpDirectory
 New-Alias -Name wgg -Value Install-WinGetPackageInteractive
+New-Alias -Name loadenv -Value Import-Env
 
 Export-ModuleMember -Function New-Link,
                               Show-Drives,
@@ -94,7 +113,8 @@ Export-ModuleMember -Function New-Link,
                               Get-ProcessForPort,
                               Move-UpDirectory,
                               Update-AllWinGetPackages,
-                              Install-WinGetPackageInteractive
+                              Install-WinGetPackageInteractive,
+                              Import-Env
 
 Export-ModuleMember -Alias touch,
                            jq,
@@ -107,4 +127,5 @@ Export-ModuleMember -Alias touch,
                            wgs,
                            wgu,
                            '..',
-                           wgg
+                           wgg,
+                           loadenv
