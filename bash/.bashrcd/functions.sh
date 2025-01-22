@@ -143,8 +143,9 @@ function _show_info {
 	FILESIZE=$(stat -c%s "$1" | numfmt --to=iec)
 	FILETYPE=$(stat -c%F "$1")
 	FILENAME=$(stat -c%n "$1")
+    FILEPERM=$(stat -c%A "$1")
 
-	echo "$FILESIZE $FILENAME ($FILETYPE)"
+	echo "$FILESIZE $FILENAME ($FILETYPE) [$FILEPERM]"
 }
 
 # Remove consecutive duplicate lines from the input
@@ -198,3 +199,19 @@ function _tm() {
         tmux attach-session -t $1
     fi
 }
+
+function _open_zellij() {
+    if [ "$#" -eq 0 ]; then
+        N_SESSIONS=$(zellij list-sessions | wc -l)
+        if [ "$N_SESSIONS" -eq 0 ]; then
+            zellij -s "main"
+        elif [ "$N_SESSIONS" -eq 1 ]; then
+            zellij attach $(zellij list-sessions | sed -e 's/\x1b\[[0-9;]*m//g' -e 's/ .*$//')
+        else
+            zellij attach $(zellij list-sessions | sed -e 's/\x1b\[[0-9;]*m//g' -e 's/ - attach to resurrect//' | fzf | sed 's/ .*$//')
+        fi
+    else
+        zellij attach $1
+    fi
+}
+

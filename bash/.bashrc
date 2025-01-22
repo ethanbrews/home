@@ -13,7 +13,7 @@ if [ -d "$HOME/.cargo/bin" ]; then
 fi
 export TERM=xterm-256color
 if _can_exec nvim; then
-    export EDITOR=nvim
+    export EDITOR="nvim --clean"
 else
     export EDITOR=vim
 fi
@@ -51,20 +51,16 @@ _pyalias 'convert' "$LOCAL/scripts/convert.py"
 
 # Misc
 _optalias 'tmux' 'tm' '_tm'
+_optalias 'zellij' 'tt' '_open_zellij'
 _optalias 'nvim' 'vim' 'nvim'
 _optalias 'bat' 'cat' 'bat --plain'
 _optalias 'realpath' 'cdr' '\cd $(realpath .)'
 
-# Zoxide
-if _can_exec zoxide; then
-    eval "$(zoxide init bash)"
-    alias cd='_zl'
-else
-    alias cd='_cl'
-fi
+alias cd='_cl'
 
 # Finally, source the non version controlled local.sh
 _trysource "$HOME/.bashrcd/local.sh"
 
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
+. "$HOME/.cargo/env"

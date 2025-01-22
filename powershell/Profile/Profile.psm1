@@ -7,3 +7,4 @@ Import-Module Styles
 Import-Module Admin
 Import-Module QuickSwitch
 Import-Module Aliases
+Import-Module MultiSelect
