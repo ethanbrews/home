@@ -1,7 +1,7 @@
 function New-Link {
     param(
-        [string]$Source,
-        [string]$Destination
+        [Parameter(Mandatory, Position=0)][string]$Source,
+        [Parameter(Mandatory, Position=1)][string]$Destination
     )
     New-Item -Path $Destination -ItemType SymbolicLink -Value $Source
 }
@@ -69,6 +69,15 @@ function Install-WinGetPackageInteractive {
     echo "Not implemented"
 }
 
+function Send-SshPublicKey {
+    param(
+        [Parameter(Mandatory, Position=0)][string]$User,
+        [Parameter(Mandatory, Position=1)][string]$Hostname
+    )
+
+    Get-Content $env:userprofile/.ssh/id_rsa.pub | ssh "$User@$Hostname" 'cat >> .ssh/authorized_keys'
+}
+
 New-Alias -Name touch -Value New-EmptyFile
 New-Alias -Name jq -Value jq-win64
 New-Alias -Name ln -Value New-Link
@@ -88,7 +97,8 @@ Export-ModuleMember -Function New-Link,
                               New-EmptyFile,
                               Get-ProcessForPort,
                               Move-UpDirectory,
-                              Update-AllWinGetPackages
+                              Update-AllWinGetPackages,
+                              Send-SshPublicKey
 
 Export-ModuleMember -Alias touch,
                            jq,
