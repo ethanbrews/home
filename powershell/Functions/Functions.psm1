@@ -122,7 +122,7 @@ Export-ModuleMember -Function New-Link,
                               Get-ProcessForPort,
                               Move-UpDirectory,
                               Update-AllWinGetPackages,
-                              Send-SshPublicKey
+                              Send-SshPublicKey,
                               Install-WinGetPackageInteractive,
                               Import-Env
 
