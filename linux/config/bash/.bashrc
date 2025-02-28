@@ -13,7 +13,7 @@ if [ -d "$HOME/.cargo/bin" ]; then
 fi
 export TERM=xterm-256color
 if _can_exec nvim; then
-    export EDITOR="nvim --clean"
+    export EDITOR="cvim"
 else
     export EDITOR=vim
 fi
@@ -23,6 +23,7 @@ export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 export MANPATH="$LOCAL/usr/share/man:$MANPATH"
 export PATH="$LOCAL/usr/bin:$PATH"
 export PYTHONPATH="$LOCAL/scripts:$PYTHONPATH"
+export GOBIN="$HOME/.local/bin"
 
 # System
 alias ..='_go_back'
