@@ -8,7 +8,8 @@ local config = function()
             enable = true,
             additional_vim_regex_highlighting = false,
         },
-        ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'cmake', 'markdown', 'bash', 'markdown_inline' }
+        ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'cmake', 'markdown', 'bash', 'markdown_inline' },
+        compilers = { "clang" }
     }
 end
 

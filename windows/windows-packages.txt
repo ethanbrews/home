@@ -45,4 +45,3 @@ Microsoft.AppInstaller
 Microsoft.DevHome
 Microsoft.WindowsTerminal
 TheBrowserCompany.Arc
-Debian.Debian
