@@ -1,6 +1,6 @@
 local config = function()
 
-    local highlight = {
+    --[[ local highlight = {
         "IndentRed",
         "IndentYellow",
         "IndentBlue",
@@ -8,12 +8,12 @@ local config = function()
         "IndentGreen",
         "IndentPurple",
         "IndentCyan",
-    }
+    } ]]--
 
     require('ibl').setup {
-        indent = { 
-            highlight = highlight,
-            char = '╎'
+        indent = {
+         --   highlight = highlight,
+         --   char = '╎'
         },
         scope = {
             enabled = true,

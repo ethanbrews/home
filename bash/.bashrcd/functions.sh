@@ -138,6 +138,12 @@ function d2h(){
 	printf "%x\n" $1
 }
 
+csview()
+{
+    local file="$1"
+    cat "$file" | sed -e 's/,,/, ,/g' | column -s, -t | less -#5 -N -S
+}
+
 # _show_info $1: Show basic info about the file or directory, $1
 function _show_info {
 	FILESIZE=$(stat -c%s "$1" | numfmt --to=iec)

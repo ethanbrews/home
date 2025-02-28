@@ -1,3 +1,7 @@
+if (not vim.g.cscope_plugin) then
+    return { }
+end
+
 local opts = {
     disable_maps = false,
     skip_input_prompt = true,
