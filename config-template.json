@@ -1,0 +1,44 @@
+{
+    "config": [
+        {
+            "from": "zsh",
+            "to": "~/.zshrcd"
+        },
+        {
+            "from": "vim",
+            "to": "~/"
+        },
+        {
+            "from": "tmux",
+            "to": "~/"
+        },
+        {
+            "from": "nvim",
+            "to": "~/.config/nvim/"
+        },
+        {
+            "from": "zellij",
+            "to": "~/.config/zellij/"
+        }
+    ],
+    "scripts": [
+        "./scripts/ensure_zshrc.sh"
+    ],
+    "packages": {
+        "brew": [
+            "tmux",
+            "fzf",
+            "d2",
+            "zellij",
+            "neovim",
+            "ripgrep",
+            "fd-find"
+        ],
+        "apt": [
+            "build-essential",
+            "net-tools",
+            "dnsutils"
+        ]
+    }
+    
+}

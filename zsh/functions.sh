@@ -1,6 +1,13 @@
 # _can_exec $1: Test if a program, $1, is installed and in $PATH
 function _can_exec {
-  builtin type -P "$1" &> /dev/null
+  command -v "$1" &> /dev/null
+}
+
+# trypath $1: Add $1 to path if it exists
+function _trypath() {
+    if [ -d "$1" ]; then
+        export PATH="$PATH:$1"
+    fi
 }
 
 # optalias $1, $2, $3: Create an alias, $2=$3 if $1 is found in $PATH
@@ -19,7 +26,7 @@ function _pyalias() {
     local alias=${1}
     local script=${2}
 
-    if _can_exec python3 $$ [ -f $script ]; then
+    if _can_exec python3 && [ -f $script ]; then
         alias $alias="python3 '$script'"
     fi
 }
@@ -121,7 +128,10 @@ function _go_back {
             echo "error: Not a valid number" >&2; return 1
         fi
         if [[ "$1" -gt "0" ]] ; then
-            CD=$(eval "printf '../%.0s' {1..$1}")
+            CD=""
+            for ((i=1; i<=$1; i++)); do
+                CD+="../"
+            done
             echo "$CD"
             eval "cd $CD"
         fi
@@ -146,12 +156,21 @@ csview()
 
 # _show_info $1: Show basic info about the file or directory, $1
 function _show_info {
-	FILESIZE=$(stat -c%s "$1" | numfmt --to=iec)
-	FILETYPE=$(stat -c%F "$1")
-	FILENAME=$(stat -c%n "$1")
-    FILEPERM=$(stat -c%A "$1")
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        # macOS stat syntax
+        FILESIZE=$(stat -f%z "$1" | numfmt --to=iec 2>/dev/null || stat -f%z "$1")
+        FILETYPE=$(stat -f%HT "$1")
+        FILENAME=$(stat -f%N "$1")
+        FILEPERM=$(stat -f%Sp "$1")
+    else
+        # GNU stat syntax (Linux)
+        FILESIZE=$(stat -c%s "$1" | numfmt --to=iec)
+        FILETYPE=$(stat -c%F "$1")
+        FILENAME=$(stat -c%n "$1")
+        FILEPERM=$(stat -c%A "$1")
+    fi
 
-	echo "$FILESIZE $FILENAME ($FILETYPE) [$FILEPERM]"
+    echo "$FILESIZE $FILENAME ($FILETYPE) [$FILEPERM]"
 }
 
 # Remove consecutive duplicate lines from the input
