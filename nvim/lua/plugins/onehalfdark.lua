@@ -1,7 +1,7 @@
 local opts = {
     options = {
         cursorline = true,
-        transparency = true,
+        transparency = false,
     },
     colors = {
         dark_red =    "require('onedarkpro.helpers').darken('red', 45, 'onedark')",
