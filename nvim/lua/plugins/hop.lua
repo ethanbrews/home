@@ -4,13 +4,14 @@ return {
     opts = {
         keys = 'etovxqpdygfblzhckisuran'
     },
-    keys = { {
-        '<Leader>f',
-        function()
-            require('hop').hint_words({ direction = require('hop.hint').HintDirection.AFTER_CURSOR, current_line_only = false })
-        end,
-        desc = 'Walk forwards',
-    },
+    keys = {
+        {
+            '<Leader>f',
+            function()
+                require('hop').hint_words({ direction = require('hop.hint').HintDirection.AFTER_CURSOR, current_line_only = false })
+            end,
+            desc = 'Walk forwards',
+        },
         {
             '<Leader>F',
             function()
