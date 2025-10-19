@@ -37,6 +37,11 @@ _optalias 'zellij' 'tt' '_open_zellij'
 _optalias 'nvim' 'vim' 'nvim'
 _optalias 'bat' 'cat' 'bat --plain'
 
+_optalias 'git' 'gs' 'git status'
+_optalias 'git' 'ga' 'git add'
+_optalias 'git' 'gl' 'git log --all --decorate --oneline --graph'
+_optalias 'git' 'gc' 'git commit'
+
 alias cd='_cl'
 
 _pyalias 'extract' "$scriptspath/extract.py"
