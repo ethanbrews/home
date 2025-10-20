@@ -1,46 +1,52 @@
 return {
-	'nvim-telescope/telescope.nvim', tag = '0.1.8',
-	dependencies = { 'nvim-lua/plenary.nvim' },
-	keys = {
+    'nvim-telescope/telescope.nvim',
+    tag = '0.1.8',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    keys = {
         {
             'tl',
-            require('telescope.builtin').buffers
+            function() require('telescope.builtin').buffers() end,
+            desc = "List open buffers"
         },
         {
             'tf',
-             require('telescope.builtin').find_files
+            function() require('telescope.builtin').find_files() end,
+            desc = "Live file finder"
         },
         {
             'tq',
-            require('telescope.builtin').help_tags
+            function() require('telescope.builtin').help_tags() end,
+            desc = "Live tag search"
         },
         {
             'tg',
-            require('telescope.builtin').live_grep
+            function() require('telescope.builtin').live_grep() end,
+            desc = "Live grep"
         },
         {
             'th',
-            require('telescope.builtin').oldfiles
+            function() require('telescope.builtin').oldfiles() end,
+            desc = "Search recent files"
         },
         {
             't;',
-            require('telescope.builtin').command_history
-        },
-        {
-            'tt',
-            require('telescope.builtin').tags
+            function() require('telescope.builtin').command_history() end,
+            desc = "Search recent commands"
         },
         {
             'tm',
-            require('telescope.builtin').marks
+            function() require('telescope.builtin').marks() end,
+            desc = "Live marks search"
         },
         {
             'tq',
-            require('telescope.builtin').registers
+            function() require('telescope.builtin').registers() end,
+            desc = "Live registers search"
         },
         {
             't/',
-            require('telescope.builtin').man_pages
+            function() require('telescope.builtin').man_pages() end,
+            desc = "Search man pages"
         }
     }
 }

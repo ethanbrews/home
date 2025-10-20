@@ -1,0 +1,25 @@
+return {
+    {
+        "CopilotC-Nvim/CopilotChat.nvim",
+        dependencies = {
+            { "nvim-lua/plenary.nvim", branch = "master" },
+        },
+        build = "make tiktoken",
+        opts = {
+            window = {
+                layout = 'vertical',
+                width = 80,
+                border = 'solid',
+            },
+
+            headers = {
+                user = 'You',
+                assistant = 'Copilot',
+                tool = 'Tool',
+            },
+
+            separator = '━━',
+            auto_fold = true, -- Automatically folds non-assistant messages
+        },
+    },
+}

@@ -1,6 +1,7 @@
 return {
-	"nvimdev/indentmini.nvim",
-	config = function()
-    		require("indentmini").setup() -- use default config
-	end,
+    "nvimdev/indentmini.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
+        require("indentmini").setup()
+    end,
 }
