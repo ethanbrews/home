@@ -1,0 +1,47 @@
+layout {
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm" {
+                format_left   "{mode} #[fg=#6C7086]({session}) |{tabs}"
+                format_center ""
+                format_right  "{command_git_branch} {datetime}"
+                format_space  ""
+
+                border_enabled  "false"
+                border_char     "─"
+                border_format   "#[fg=#6C7086]{char}"
+                border_position "top"
+
+                hide_frame_for_single_pane "true"
+
+                mode_normal        "#[fg=green]Normal "
+                mode_locked        "#[fg=magenta]Locked "
+                mode_resize        "#[fg=blue]Resize "
+                mode_pane          "#[fg=red]Pane   "
+                mode_tab           "#[fg=red]Tab    "
+                mode_scroll        "#[fg=yellow]Scroll "
+                mode_enter_search  "#[fg=yellow]{name}"
+                mode_search        "#[fg=yellow]Search "
+                mode_rename_tab    "#[fg=red]Rename "
+                mode_rename_pane   "#[fg=red]Rename "
+                mode_session       "#[fg=red]Session"
+                mode_move          "#[fg=blue]Move   "
+                mode_prompt        "#[fg=magenta]Prompt "
+                mode_tmux          "#[fg=#ffc387]Tmux   "
+
+                tab_normal   "#[fg=#6C7086] {name} "
+                tab_active   "#[fg=#dcc7a0] {name} "
+
+                command_git_branch_command     "git rev-parse --abbrev-ref HEAD"
+                command_git_branch_format      "#[fg=blue] {stdout} "
+                command_git_branch_interval    "10"
+                command_git_branch_rendermode  "static"
+
+                datetime        "#[fg=#6C7086,bold] {format} "
+                datetime_format "%A, %d %b %Y %H:%M"
+                datetime_timezone "Europe/Berlin"               // plugin configuration...
+            }
+        }
+        children
+    }
+}
