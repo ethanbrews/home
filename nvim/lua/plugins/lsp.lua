@@ -27,6 +27,7 @@ return {
         require("mason").setup()
         require("mason-lspconfig").setup({
             ensure_installed = {
+                "jdtls",
                 "lua_ls",
                 "rust_analyzer",
                 "ts_ls",
@@ -36,6 +37,9 @@ return {
                 -- "java_language_server",
                 -- "csharp_ls",
                 -- "ruby_lsp"
+            },
+            automatic_enable = {
+                exclude = { "jdtls" }
             },
             handlers = {
                 function(server_name) -- default handler (optional)

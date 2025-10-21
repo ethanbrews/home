@@ -19,7 +19,8 @@ return {
             comments = "italic",
             keywords = "bold,italic",
             functions = "italic",
-            conditionals = "italic"
+            conditionals = "italic",
+            virtual_text = "italic"
         }
     },
     init = function()

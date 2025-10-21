@@ -10,6 +10,12 @@ vim.api.nvim_create_user_command('Vb', 'normal! <C-v>', {})
 vim.api.nvim_set_keymap('n', 'tn', ':bn<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', 'tp', ':bp<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', 'td', ':bd<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>do', '<cmd>lua vim.diagnostic.open_float()<CR>', { noremap = true, silent = true })
+
+vim.keymap.set("n", "<leader>di", function()
+    local config = vim.diagnostic.config()
+    vim.diagnostic.config({ virtual_text = not config.virtual_text })
+end, { desc = "Toggle diagnostic virtual lines" })
 
 vim.g.mapleader = "\\"
 vim.g.maplocalleader = " "
