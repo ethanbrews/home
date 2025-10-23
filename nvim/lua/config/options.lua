@@ -42,3 +42,7 @@ vim.opt.foldlevel = 99
 vim.opt.wrapscan = false
 vim.opt.clipboard = 'unnamed' -- Use system clipboard
 vim.opt.signcolumn = "yes"
+
+-- Enabled so I can put a .nvim.lua in a project root for formatting options
+vim.o.exrc = true        -- allow .nvim.lua or .exrc per project
+vim.o.secure = true      -- only run safe commands

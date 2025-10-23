@@ -1,7 +1,8 @@
 return {
     "stevearc/oil.nvim",
-    lazy = true,
+    lazy = false, -- Looking for a solution to lazy load and open oil with `nvim .`
     command = "Oil",
+    events = { "BufEnter" },
     opts = {
 
     },
