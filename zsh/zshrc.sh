@@ -1,7 +1,6 @@
 unalias cd ls 2> /dev/null
 
 local here=${0:a:h}
-local scriptspath=$here/../scripts
 
 source $here/functions.sh
 source $here/prompt.sh
@@ -26,7 +25,6 @@ if [ -x /usr/bin/dircolors ]; then
     alias ls='ls --color=auto'
 fi
 
-_trysource "$HOME/.fzf.zsh"
 _trysource "$HOME/.cargo/env"
 if _can_exec fzf; then
     source <(fzf --zsh)
