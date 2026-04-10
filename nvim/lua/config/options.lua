@@ -1,10 +1,5 @@
 vim.keymap.set("n", "<Space>", "<Nop>", { silent = true, remap = false })
 
-vim.api.nvim_create_autocmd({ 'VimLeave' }, {
-    pattern = { "*" },
-    command = "set guicursor=a:ver5-blinkon2-blinkoff1"
-});
-
 vim.api.nvim_create_user_command('Vb', 'normal! <C-v>', {})
 
 vim.api.nvim_set_keymap('n', 'tn', ':bn<CR>', { noremap = true, silent = true })
