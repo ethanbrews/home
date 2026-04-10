@@ -43,11 +43,7 @@ function _print_dir() {
     if [ "$N_FILES" -gt 200 ]; then
         echo -e "\e[34m$N_FILES\e[0m items in directory"
     else
-        if _can_exec "exa"; then
-            exa
-        else
-	        ls --color=auto
-        fi
+	    ls --color=auto
     fi
 }
 

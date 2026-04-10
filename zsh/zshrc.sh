@@ -40,7 +40,9 @@ _optalias 'git' 'ga' 'git add'
 _optalias 'git' 'gl' 'git log --all --decorate --oneline --graph'
 _optalias 'git' 'gc' 'git commit'
 
-alias cd='_cl'
+chpwd() {
+    _print_dir
+}
 
 _pyalias 'extract' "$scriptspath/extract.py"
 
