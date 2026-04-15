@@ -34,6 +34,7 @@ return {
                 "pyright",
                 "clangd",
                 "gopls",
+                "bashls"
                 -- "java_language_server",
                 -- "csharp_ls",
                 -- "ruby_lsp"
@@ -45,6 +46,12 @@ return {
                 function(server_name) -- default handler (optional)
                     require("lspconfig")[server_name].setup {
                         capabilities = capabilities
+                    }
+                end,
+
+                ["bashls"] = function()
+                    require("lspconfig").bashls.setup {
+                        filetypes = { "sh", "bash", "zsh" }
                     }
                 end,
 
