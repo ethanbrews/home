@@ -1,4 +1,5 @@
 autoload -Uz vcs_info
+autoload -Uz add-zsh-hook
 autoload -Uz edit-command-line
 
 # git info in prompt
@@ -7,7 +8,7 @@ zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' check-for-changes false
 
 setopt prompt_subst
-precmd() {
+_pre_prompt() {
     EXIT=$?
     vcs_info
     exit_code_str=""
@@ -31,6 +32,8 @@ export KEYTIMEOUT=1
 
 zle -N edit-command-line
 bindkey -M vicmd 'v' edit-command-line
+
+add-zsh-hook precmd _pre_prompt
 
 # Final prompt
 PROMPT='${exit_code_str}%F{green}[%f%D{%H:%M:%S} %F{green}%B%~%b${vcs_info_msg_0_}%F{green}]%f$ '
