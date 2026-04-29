@@ -236,3 +236,25 @@ function _open_zellij() {
     fi
 }
 
+function _git_switch() {
+
+  if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    print -P "%F{red}error:%f not a git repository."
+    return 1
+  fi
+
+  local branch
+  # Get local branches, excluding the current one for a cleaner list
+  branch=$(git branch --format='%(refname:short)' | \
+    fzf --height 40% \
+        --layout=reverse \
+        --border=none \
+        --prompt="󱓞 Switch Branch: " \
+        --pointer="▶" \
+        --color="hl:-1:underline,hl+:-1:underline:bold" \
+        --preview 'git log --oneline --graph --color=always -n 10 {}')
+
+  if [[ -n "$branch" ]]; then
+    git switch "$branch"
+  fi
+}
