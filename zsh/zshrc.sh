@@ -3,7 +3,9 @@ unalias cd ls 2> /dev/null
 local here=${0:a:h}
 
 source $here/functions.sh
+source $here/tenancy-cache.sh
 source $here/prompt.sh
+source $here/iterm2.sh
 
 _trypath "$HOME/.cargo/bin"
 
@@ -28,18 +30,33 @@ fi
 _trysource "$HOME/.cargo/env"
 if _can_exec fzf; then
     source <(fzf --zsh)
+
+    if _can_exec fd; then
+        fzf_compgen_path() {
+            fd --exclude ".git" --follow --hidden . "$1"
+        }
+
+        fzf_compgen_dir() {
+            fd --exclude ".git" --follow --hidden --type d . "$1"
+        }
+
+        export FZF_ALT_C_COMMAND="fd --type d --exclude .git --follow --hidden"
+        export FZF_DEFAULT_COMMAND="fd --type f --exclude .git --follow --hidden"
+        export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+    fi
 fi
 
 _optalias 'tmux' 'tm' '_tm'
 _optalias 'zellij' 'tt' '_open_zellij'
 _optalias 'nvim' 'vim' 'nvim'
-_optalias 'bat' 'cat' 'bat --plain'
+_optalias 'bat' 'cat' 'bat --paging=never --plain'
 
 _optalias 'git' 'gs' 'git status --ahead-behind'
 _optalias 'git' 'ga' 'git add'
 _optalias 'git' 'gl' 'git log --all --decorate --oneline --graph'
 _optalias 'git' 'gc' 'git commit'
 _optalias 'git' 'gt' '_git_switch'
+_optalias 'git' 'git-cleanup' '_git_cleanup'
 
 chpwd() {
     _print_dir

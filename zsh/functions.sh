@@ -258,3 +258,32 @@ function _git_switch() {
     git switch "$branch"
   fi
 }
+
+function _git_cleanup() {
+  local dry_run=false
+  [[ "$1" == "-n" || "$1" == "--dry-run" ]] && dry_run=true
+
+  # Extract default branch
+  local base=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@')
+  : ${base:=$(git rev-parse --abbrev-ref HEAD)}
+
+  # Guard: Ensure we are in a git repo
+  git rev-parse --is-inside-work-tree >/dev/null 2>&1 || return 1
+
+  [[ "$dry_run" == "false" ]] && git checkout -q "$base"
+
+  git for-each-ref refs/heads/ "--format=%(refname:short)" | while read -r branch; do
+    [[ "$branch" == "$base" ]] && continue
+
+    local merge_base=$(git merge-base "$base" "$branch")
+    local commit_tree=$(git commit-tree "$branch^{tree}" -p "$merge_base" -m _)
+
+    if [[ $(git cherry "$base" "$commit_tree") == "-"* ]]; then
+      if [[ "$dry_run" == "true" ]]; then
+        echo "$branch (merged)"
+      else
+        git branch -D "$branch"
+      fi
+    fi
+  done
+}
