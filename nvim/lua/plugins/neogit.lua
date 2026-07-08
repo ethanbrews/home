@@ -1,6 +1,6 @@
 return {
     "NeogitOrg/neogit",
-    command = { "Neogit", "NeogitOrg" },
+    cmd = { "Neogit" },
     lazy = true,
     dependencies = {
         "nvim-lua/plenary.nvim",

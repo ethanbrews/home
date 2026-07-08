@@ -12,7 +12,7 @@ return {
         "saadparwaiz1/cmp_luasnip",
         "j-hui/fidget.nvim",
     },
-    event = "VeryLazy",
+    event = { "BufReadPre", "BufNewFile" },
 
     config = function()
         local cmp = require('cmp')
@@ -23,52 +23,67 @@ return {
             vim.lsp.protocol.make_client_capabilities(),
             cmp_lsp.default_capabilities())
 
+        -- Buffer-local keymaps, set only when a language server attaches.
+        vim.api.nvim_create_autocmd("LspAttach", {
+            group = vim.api.nvim_create_augroup("UserLspAttach", { clear = true }),
+            callback = function(ev)
+                local function map(lhs, rhs, desc)
+                    vim.keymap.set("n", lhs, rhs, { buffer = ev.buf, silent = true, desc = "LSP: " .. desc })
+                end
+
+                -- Navigation / inspection: bare-key Vim idioms.
+                map("gd", vim.lsp.buf.definition, "Go to definition")
+                map("gD", vim.lsp.buf.declaration, "Go to declaration")
+                map("gr", vim.lsp.buf.references, "List references")
+                map("gi", vim.lsp.buf.implementation, "Go to implementation")
+                map("gy", vim.lsp.buf.type_definition, "Go to type definition")
+                map("K", vim.lsp.buf.hover, "Hover documentation")
+                map("[d", function() vim.diagnostic.jump({ count = -1 }) end, "Previous diagnostic")
+                map("]d", function() vim.diagnostic.jump({ count = 1 }) end, "Next diagnostic")
+
+                -- Act on this code: grouped under <localleader> (Space).
+                map("<localleader>rn", vim.lsp.buf.rename, "Rename symbol")
+                map("<localleader>ca", vim.lsp.buf.code_action, "Code action")
+                map("<localleader>k", vim.lsp.buf.signature_help, "Signature help")
+            end,
+        })
+
         require("fidget").setup({})
         require("mason").setup()
+        -- mason-lspconfig v2 dropped the `handlers` option; per-server config
+        -- is now expressed via vim.lsp.config and must be set BEFORE the servers
+        -- are enabled (automatic_enable calls vim.lsp.enable during setup below).
+
+        -- Applied to every server: advertise nvim-cmp completion capabilities.
+        vim.lsp.config("*", {
+            capabilities = capabilities,
+        })
+
+        vim.lsp.config("bashls", {
+            filetypes = { "sh", "bash", "zsh" },
+        })
+
+        vim.lsp.config("lua_ls", {
+            settings = {
+                Lua = {
+                    diagnostics = {
+                        globals = { "vim", "it", "describe", "before_each", "after_each" },
+                    },
+                },
+            },
+        })
+
         require("mason-lspconfig").setup({
             ensure_installed = {
-                "jdtls",
                 "lua_ls",
                 "rust_analyzer",
                 "ts_ls",
                 "pyright",
                 "clangd",
                 "gopls",
-                "bashls"
-                -- "java_language_server",
-                -- "csharp_ls",
-                -- "ruby_lsp"
+                "bashls",
             },
-            automatic_enable = {
-                exclude = { "jdtls" }
-            },
-            handlers = {
-                function(server_name) -- default handler (optional)
-                    require("lspconfig")[server_name].setup {
-                        capabilities = capabilities
-                    }
-                end,
-
-                ["bashls"] = function()
-                    require("lspconfig").bashls.setup {
-                        filetypes = { "sh", "bash", "zsh" }
-                    }
-                end,
-
-                ["lua_ls"] = function()
-                    local lspconfig = require("lspconfig")
-                    lspconfig.lua_ls.setup {
-                        capabilities = capabilities,
-                        settings = {
-                            Lua = {
-                                diagnostics = {
-                                    globals = { "vim", "it", "describe", "before_each", "after_each" },
-                                }
-                            }
-                        }
-                    }
-                end,
-            }
+            automatic_enable = true,
         })
 
         local cmp_select = { behavior = cmp.SelectBehavior.Select }
