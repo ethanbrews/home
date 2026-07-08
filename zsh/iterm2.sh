@@ -22,10 +22,6 @@ tab-color() {
     _iterm2_locked=1
 }
 
-tab-red() { tab-color 255 0 0 }
-tab-green() { tab-color 0 255 0 }
-tab-blue() { tab-color 0 0 255 }
-
 tab-reset() {
     printf '\033]6;1;bg;*;default\a'
     _iterm2_locked=0
@@ -36,18 +32,37 @@ tab-unlock() { _iterm2_locked=0 }
 
 command-tab-colorize() {
     _iterm2_cmd_patterns+=("$1")
-    _iterm2_cmd_colors+=("$2 $3 $4")
+    
+    # If $3 is empty, it means $2 contains the whole "R G B" string
+    if [ -z "$3" ]; then
+        _iterm2_cmd_colors+=("$2")
+    else
+        _iterm2_cmd_colors+=("$2 $3 $4")
+    fi
 }
 
 folder-tab-colorize() {
     _iterm2_folder_paths+=("${1:a}")
-    _iterm2_folder_colors+=("$2 $3 $4")
+    
+    # If $3 is empty, the color is entirely in $2
+    if [ -z "$3" ]; then
+        _iterm2_folder_colors+=("$2")
+    else
+        _iterm2_folder_colors+=("$2 $3 $4")
+    fi
 }
 
 env-tab-colorize() {
     _iterm2_env_vars+=("$1")
     _iterm2_env_patterns+=("$2")
-    _iterm2_env_colors+=("$3 $4 $5")
+    
+    # For env-tab-colorize, the color starts at $3. 
+    # If $4 is empty, the color is entirely in $3.
+    if [ -z "$4" ]; then
+        _iterm2_env_colors+=("$3")
+    else
+        _iterm2_env_colors+=("$3 $4 $5")
+    fi
 }
 
 _iterm2_is_our_color() {

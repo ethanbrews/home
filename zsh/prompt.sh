@@ -15,6 +15,10 @@ _pre_prompt() {
     if [ $EXIT -ne 0 ] ; then
         exit_code_str="%F{red}$EXIT%f|"      # Add red if exit code non 0
     fi
+    aws_vault_str=""
+    if [ -n "$AWS_VAULT" ] ; then
+        aws_vault_str="%F{yellow}(aws $AWS_VAULT)%f|"
+    fi
 }
 
 # Vi mode
@@ -36,4 +40,4 @@ bindkey -M vicmd 'v' edit-command-line
 add-zsh-hook precmd _pre_prompt
 
 # Final prompt
-PROMPT='${exit_code_str}%F{green}[%f%D{%H:%M:%S} %F{green}%B%~%b${vcs_info_msg_0_}%F{green}]%f$ '
+PROMPT='${aws_vault_str}${exit_code_str}%F{green}[%f%D{%H:%M:%S} %F{green}%B%~%b${vcs_info_msg_0_}%F{green}]%f$ '

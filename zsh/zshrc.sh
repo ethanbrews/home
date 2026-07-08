@@ -3,7 +3,6 @@ unalias cd ls 2> /dev/null
 local here=${0:a:h}
 
 source $here/functions.sh
-source $here/tenancy-cache.sh
 source $here/prompt.sh
 source $here/iterm2.sh
 
@@ -53,7 +52,9 @@ _optalias 'bat' 'cat' 'bat --paging=never --plain'
 
 _optalias 'git' 'gs' 'git status --ahead-behind'
 _optalias 'git' 'ga' 'git add'
-_optalias 'git' 'gl' 'git log --all --decorate --oneline --graph'
+_optalias 'git' 'gld' 'git log --all --decorate --oneline --graph'
+_optalias 'git' 'gl' 'git log --graph --oneline --decorate master...HEAD'
+
 _optalias 'git' 'gc' 'git commit'
 _optalias 'git' 'gt' '_git_switch'
 _optalias 'git' 'git-cleanup' '_git_cleanup'
