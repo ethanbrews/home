@@ -82,6 +82,27 @@ function _cl {
     return $EXIT
 }
 
+is_base64() {
+    local input="$1"
+
+    # Reject empty strings
+    if [[ -z "$input" ]]; then
+        return 1
+    fi
+
+    # Standard Base64 regex pattern matching:
+    # 1. Length must be a multiple of 4
+    # 2. Characters must be A-Z, a-z, 0-9, +, /
+    # 3. Can end with valid '=' or '==' padding
+    local b64_regex='^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$'
+
+    if [[ "$input" =~ $b64_regex ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 # _zl $1: cd to $1 then ls. If $1 is a file, then go to containing folder. If 2+ arguments are provided, use zoxide.
 function _zl {
     EXIT=0
@@ -286,4 +307,15 @@ function _git_cleanup() {
       fi
     fi
   done
+}
+
+function git-restore-from() {
+  if [[ -z "$1" ]]; then
+    echo "Usage: git-restore-from <branch-name> [path...]" >&2
+    return 1
+  fi
+
+  local branch="$1"
+  shift
+  git restore --source="$branch" --staged -- "${@:-.}"
 }

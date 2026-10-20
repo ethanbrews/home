@@ -1,3 +1,5 @@
+[[ "$TERM_PROGRAM" != "iTerm.app" ]] && return
+
 typeset -ga _iterm2_cmd_patterns=()
 typeset -ga _iterm2_cmd_colors=()
 typeset -ga _iterm2_folder_paths=()

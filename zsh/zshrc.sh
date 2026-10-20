@@ -5,6 +5,7 @@ local here=${0:a:h}
 source $here/functions.sh
 source $here/prompt.sh
 source $here/iterm2.sh
+source $here/ghostty.sh
 
 _trypath "$HOME/.cargo/bin"
 
@@ -27,7 +28,9 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 _trysource "$HOME/.cargo/env"
-if _can_exec fzf; then
+if false && _can_exec tv; then
+    source <(tv init zsh)
+elif _can_exec fzf; then
     source <(fzf --zsh)
 
     if _can_exec fd; then
