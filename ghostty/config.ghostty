@@ -1,0 +1,11 @@
+theme = One Half Dark
+font-family = JetBrainsMonoNL Nerd Font Mono
+progress-style = true
+window-padding-balance = false
+window-padding-color = extend
+
+macos-secure-input-indication = true
+macos-shortcuts = ask
+macos-titlebar-style = tabs
+macos-icon = custom
+background-blur = macos-glass-regular
