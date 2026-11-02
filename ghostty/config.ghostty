@@ -8,4 +8,5 @@ macos-secure-input-indication = true
 macos-shortcuts = ask
 macos-titlebar-style = tabs
 macos-icon = custom
+macos-custom-icon = ~/.config/ghostty/GhosttyGlass.icns
 background-blur = macos-glass-regular
